@@ -16,7 +16,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs';
+} from './lib/catalog.mjs?v=20260722c';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();

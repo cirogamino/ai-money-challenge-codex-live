@@ -56,7 +56,7 @@ export const products = [
       'Launch script packet',
     ],
     cta: 'Reserve $99 Sprint deposit',
-    checkoutAction: 'Cal.com paid booking or Stripe deposit link',
+    checkoutAction: 'Cal.com paid booking, Stripe deposit link, or Polar checkout',
   },
 ];
 
@@ -76,7 +76,7 @@ export function getSprintDepositOffer() {
     cta: 'Reserve $99 Sprint deposit',
     buyerPromise:
       'Reserve one of the 3 Sprint slots, credit the deposit toward the $1,500 build, and trigger qualification before full delivery.',
-    connector: 'Stripe Payment Link or Cal.com paid booking',
+    connector: 'Stripe Payment Link, Polar checkout, or Cal.com paid booking',
   };
 }
 
@@ -156,7 +156,7 @@ export function getSuperChecklist() {
           label: 'Payment link connector packet',
           owner: 'Claude orchestrator',
           status: 'in_progress',
-          detail: 'Ready to wire once Ciro authorizes Stripe, Gumroad, PayPal, or the chosen payment tool.',
+          detail: 'Ready to wire once the live Stripe, Polar, PayPal, or chosen payment URL is available.',
         },
         {
           label: 'Paid booking connector',
@@ -269,7 +269,7 @@ export function getGoButtonDashboard() {
         name: 'Payment link',
         state: 'in_progress',
         owner: 'Claude orchestrator',
-        action: 'Wire Stripe, Gumroad, PayPal, or the chosen payment link after authorization.',
+        action: 'Wire Stripe, Polar, PayPal, or the chosen payment link after authorization.',
       },
       {
         name: '$99 Sprint deposit',
@@ -315,17 +315,17 @@ export function getCheckoutState() {
     liveLabel: 'Connector preview',
     pendingConnectors: ['payment link', 'paid booking', 'intake form', 'ledger sync', 'subdomain routing'],
     buyerMessage:
-      'Payments are not live in this local preview. The final version should connect a Stripe, Gumroad, PayPal, or paid booking link, one intake form, and one ledger update before launch.',
+      'Payments are not live in this local preview. The final version should connect a Stripe, Polar, PayPal, or paid booking link, one intake form, and one ledger update before launch.',
     actions: [
       {
         label: 'Buy $19 Snapshot',
         productSlug: 'ai-opportunity-snapshot',
-        connector: 'Stripe or Gumroad',
+        connector: 'Stripe or Polar',
       },
       {
         label: 'Join $49/mo Deal Room',
         productSlug: 'ai-deal-room',
-        connector: 'Stripe subscription or Gumroad membership',
+        connector: 'Stripe subscription or Polar product',
       },
       {
         label: sprintDeposit.cta,
@@ -511,12 +511,12 @@ export function getLaunchReadiness() {
       {
         name: 'Payment link',
         owner: 'Codex build packet',
-        status: 'Prepare Stripe, Gumroad, or PayPal link target after Ciro authorizes account use.',
+        status: 'Prepare Stripe, Polar, or PayPal link target after Ciro authorizes account use.',
       },
       {
         name: 'Paid booking',
         owner: 'Codex build packet',
-        status: 'Connect a Cal.com paid booking, Stripe link, or PayPal link for the $99 Sprint deposit.',
+        status: 'Connect a Cal.com paid booking, Stripe link, Polar checkout, or PayPal link for the $99 Sprint deposit.',
       },
       {
         name: 'Intake form',
@@ -536,7 +536,7 @@ export function buildClaudeDeploymentAsk() {
   return [
     'Claude/orchestrator handoff request:',
     'Confirm whether the Codex/ChatGPT sales site should live at codex.cedogamino.com or chatgtp.cedogamino.com.',
-    'After Ciro authorizes the final connector stack, wire the chosen subdomain, $19 Snapshot payment link, $99 Sprint deposit, paid booking or deposit path, intake form, instant Snapshot delivery, and ledger update.',
+    'After Ciro authorizes the final connector stack, wire the chosen subdomain, $19 Snapshot payment link, Polar or Stripe checkout, $99 Sprint deposit, paid booking or deposit path, intake form, instant Snapshot delivery, and ledger update.',
     'Goal: Ciro should only need to authorize and press go, not manually post, DM, or stitch systems together.',
   ].join('\n');
 }

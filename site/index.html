@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Money Challenge Sales Console</title>
+    <meta
+      name="description"
+      content="A local preview sales site for the Codex AI Money Challenge product ladder: Snapshot, Deal Room, and 48-Hour AI Revenue Sprint."
+    >
+    <link rel="stylesheet" href="./styles.css?v=20260722b">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="AI Money Challenge Sales Console home">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span>
+          <strong>Codex Revenue Lab</strong>
+          <small>AI Money Challenge</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#proof">Proof</a>
+        <a href="#roi-calculator">ROI</a>
+        <a href="#project-progress">Progress</a>
+        <a href="#go-button-dashboard">Go</a>
+        <a href="#qualifier">Quiz</a>
+        <a href="#super-checklist">Checklist</a>
+        <a href="#product-ladder">Buy</a>
+        <a href="#launch-readiness">Launch</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="project-progress" id="project-progress" aria-labelledby="project-progress-title">
+        <div class="section-inner progress-layout">
+          <div>
+            <p class="eyebrow">Whole project progress</p>
+            <h2 id="project-progress-title">Go-live control center</h2>
+            <p id="project-progress-milestone"></p>
+          </div>
+          <div class="progress-card" aria-label="AI Money Challenge project progress">
+            <div class="progress-card-top">
+              <span>Completion</span>
+              <strong id="project-progress-percent">0%</strong>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="project-progress-fill"></div>
+            </div>
+            <p id="project-progress-meta"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <img
+          class="hero-image"
+          src="./assets/ai-money-command-desk.png"
+          alt="AI revenue command desk showing Snapshot, Deal Room, Sprint, payment, intake, ledger, and subdomain connectors."
+        >
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">3 sprint slots before August 3</p>
+          <h1 id="hero-title">Turn one AI idea into a sellable offer in 48 hours.</h1>
+          <p class="hero-copy" id="hero-copy"></p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <button class="button button-primary" type="button" data-open-flow="ai-revenue-sprint">
+              Reserve $99 Sprint deposit
+            </button>
+            <button class="button button-secondary" type="button" data-open-flow="ai-opportunity-snapshot">
+              Try the $19 Snapshot first
+            </button>
+          </div>
+          <dl class="metric-strip" id="metric-strip" aria-label="Offer metrics"></dl>
+        </div>
+      </section>
+
+      <section class="section band-intro" aria-labelledby="promise-title">
+        <div class="section-inner intro-grid">
+          <div>
+            <p class="eyebrow">Revenue posture</p>
+            <h2 id="promise-title">One Sprint sale beats seventy-nine Snapshot sales.</h2>
+          </div>
+          <p>
+            The $19 Snapshot still matters, but its real job is to create trust and qualify
+            bigger buyers. The page now routes high-intent visitors toward a paid Sprint
+            deposit while the Go Button dashboard tracks which live connectors are ready
+            and which links still need evidence inside this workspace.
+          </p>
+        </div>
+      </section>
+
+      <section class="section go-section" id="go-button-dashboard" aria-labelledby="go-button-title">
+        <div class="section-inner">
+          <div class="go-header">
+            <div>
+              <p class="eyebrow">Authorize and press go</p>
+              <h2 id="go-button-title">One board for live hosting, payments, intake, delivery, and ledger.</h2>
+              <p>
+                Stripe and Polar can plug into this once their live payment URLs are visible to the
+                build. The site will keep preview labels until a real checkout link is wired, so we
+                do not fake cash collection.
+              </p>
+            </div>
+            <div class="go-command">
+              <span id="go-button-status">Checking connectors</span>
+              <strong id="go-button-percent">0%</strong>
+              <button class="button button-primary" type="button" data-copy-claude>Copy Go packet</button>
+            </div>
+          </div>
+          <div class="go-grid" id="go-button-grid"></div>
+        </div>
+      </section>
+
+      <section class="section proof-section" id="proof" aria-labelledby="proof-title">
+        <div class="section-inner proof-layout">
+          <div>
+            <p class="eyebrow">Before and after proof</p>
+            <h2 id="proof-title">Show the transformation before asking for money.</h2>
+            <p>
+              Buyers do not just buy "AI." They buy the confidence that one confusing idea
+              can become one clear offer, one buyer, one price, and one checkout path.
+            </p>
+            <div class="button-row">
+              <a class="button button-primary" href="../demo/">Launch snapshot demo</a>
+              <button class="button button-secondary" type="button" data-open-flow="ai-revenue-sprint">
+                Preview Sprint checkout
+              </button>
+            </div>
+          </div>
+          <div class="transformation-board" aria-label="Offer transformation preview">
+            <article>
+              <span>Before</span>
+              <p id="proof-before"></p>
+            </article>
+            <article>
+              <span>After</span>
+              <p id="proof-after"></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section niche-section" id="buyer-niches" aria-labelledby="niches-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Specific buyers</p>
+            <h2 id="niches-title">Built for buyers with a real asset to monetize.</h2>
+            <p>
+              Specific beats broad. These are the fastest paths to a paid Sprint because each
+              buyer already has knowledge, attention, or customer flow to package.
+            </p>
+          </div>
+          <div class="niche-grid" id="niche-grid"></div>
+        </div>
+      </section>
+
+      <section class="section roi-section" id="roi-calculator" aria-labelledby="roi-title">
+        <div class="section-inner roi-layout">
+          <div>
+            <p class="eyebrow">ROI calculator</p>
+            <h2 id="roi-title">Make the $19 entry price feel tiny.</h2>
+            <p>
+              The Snapshot is an easy yes when buyers compare it with the value of even one
+              new client, one saved sale, or one product idea that finally ships.
+            </p>
+          </div>
+          <form class="roi-card" id="roi-form">
+            <label>
+              Value of one buyer or saved client
+              <input id="client-value" name="client-value" type="number" min="0" value="500" inputmode="decimal">
+            </label>
+            <label>
+              Expected clients from the offer
+              <input id="expected-clients" name="expected-clients" type="number" min="0" value="1" inputmode="numeric">
+            </label>
+            <label>
+              First investment
+              <input id="investment" name="investment" type="number" min="1" value="19" inputmode="decimal">
+            </label>
+            <output class="roi-output" id="roi-output" for="client-value expected-clients investment"></output>
+          </form>
+        </div>
+      </section>
+
+      <section class="section quiz-section" id="qualifier" aria-labelledby="qualifier-title">
+        <div class="section-inner quiz-layout">
+          <div>
+            <p class="eyebrow">Buyer qualifier</p>
+            <h2 id="qualifier-title">Route each visitor to the highest-fit offer.</h2>
+            <p>
+              The quiz keeps low-readiness visitors from bouncing and pushes ready buyers
+              toward the Sprint before they settle for the cheaper product.
+            </p>
+          </div>
+          <form class="quiz-card" id="quiz-form">
+            <label><input type="checkbox" name="hasAudience"> I have an audience, list, or warm network.</label>
+            <label><input type="checkbox" name="hasService"> I have a skill, service, or offer I already understand.</label>
+            <label><input type="checkbox" name="wantsDoneForYou"> I want help building the page, intake, and launch path.</label>
+            <label><input type="checkbox" name="budgetReady"> I can pay for implementation if the offer is clear.</label>
+            <div class="quiz-result" id="quiz-result" aria-live="polite"></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="section checkout-section" id="instant-checkout" aria-labelledby="checkout-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Instant checkout rail</p>
+            <h2 id="checkout-title">No wandering once connectors are approved.</h2>
+            <p>
+              The final version should make every buying path one click away: Snapshot payment,
+              membership checkout, and the $99 Sprint deposit.
+            </p>
+          </div>
+          <div class="checkout-grid" id="checkout-grid"></div>
+        </div>
+      </section>
+
+      <section class="section snapshot-delivery-section" id="snapshot-delivery" aria-labelledby="snapshot-delivery-title">
+        <div class="section-inner snapshot-layout">
+          <div>
+            <p class="eyebrow">Instant Snapshot delivery</p>
+            <h2 id="snapshot-delivery-title">The $19 product should fulfill immediately and upsell the Sprint.</h2>
+            <p id="snapshot-promise"></p>
+            <div class="button-row">
+              <a class="button button-primary" href="../demo/">Launch snapshot demo</a>
+              <button class="button button-secondary" type="button" data-open-flow="ai-opportunity-snapshot">
+                Preview delivery flow
+              </button>
+            </div>
+          </div>
+          <div class="snapshot-board">
+            <article>
+              <span>Buyer receives</span>
+              <ul id="snapshot-outputs"></ul>
+            </article>
+            <article>
+              <span>Automation steps</span>
+              <ol id="snapshot-steps"></ol>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="product-ladder" aria-labelledby="products-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Product ladder</p>
+            <h2 id="products-title">Three offers, one deliberate upsell path.</h2>
+            <p>
+              The Sprint is the cash engine. The Snapshot catches cautious buyers. The Deal
+              Room keeps momentum after the first purchase or Sprint delivery.
+            </p>
+          </div>
+          <div class="product-grid" id="product-grid"></div>
+        </div>
+      </section>
+
+      <section class="section demo-section" id="demo" aria-labelledby="demo-title">
+        <div class="section-inner demo-layout">
+          <div>
+            <p class="eyebrow">Working demo included</p>
+            <h2 id="demo-title">The Snapshot demo is proof and a Sprint feeder.</h2>
+            <p>
+              The current demo turns a business idea into an opportunity score, pain map, and
+              launch plan. The paid version should end with a thank-you page that credits
+              the $19 purchase toward the $99 Sprint deposit.
+            </p>
+            <div class="button-row">
+              <a class="button button-primary" href="../demo/">Launch snapshot demo</a>
+              <button class="button button-secondary" type="button" data-open-flow="ai-opportunity-snapshot">
+                See checkout preview
+              </button>
+            </div>
+          </div>
+          <div class="demo-terminal" aria-label="Snapshot demo output preview">
+            <div class="terminal-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="terminal-body">
+              <p><strong>Input:</strong> "I know AI is valuable, but I do not know what to sell."</p>
+              <p><strong>Output:</strong> One buyer, one painful workflow, one paid promise.</p>
+              <p><strong>Thank-you upsell:</strong> Apply the $19 Snapshot toward the $99 Sprint deposit.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section checklist-section" id="super-checklist" aria-labelledby="checklist-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Super Ongoing Checklist</p>
+            <h2 id="checklist-title">Nothing gets lost while we push this live.</h2>
+            <p>
+              This is the visible operating list for build, connectors, launch, and profit
+              multipliers. Done means built into the current site. In progress means ready for
+              a live connector. Blocked means a real account, URL, or domain decision is still
+              missing from this workspace.
+            </p>
+          </div>
+          <div class="super-checklist-grid" id="super-checklist-grid"></div>
+        </div>
+      </section>
+
+      <section class="section trust-section" id="trust" aria-labelledby="trust-title">
+        <div class="section-inner trust-layout">
+          <div>
+            <p class="eyebrow">Trust and accountability</p>
+            <h2 id="trust-title">Built in public for a 30-day profit scoreboard.</h2>
+            <p>
+              This offer is not positioned as abstract AI advice. It is a public challenge
+              asset built by Codex for Ciro, with the goal of turning a working demo into
+              real paid receipts by August 3.
+            </p>
+          </div>
+          <div class="trust-card">
+            <span>Video-ready founder block</span>
+            <p>
+              Add a short Ciro intro or AI-disclosed creator video here before launch:
+              who this is for, what gets delivered, why the Sprint has only 3 slots,
+              and what happens immediately after payment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section upgrade-section" aria-labelledby="upgrade-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">10 upgrades now built in</p>
+            <h2 id="upgrade-title">The first conversion pass is live on the page.</h2>
+          </div>
+          <div class="upgrade-grid" id="upgrade-grid"></div>
+        </div>
+      </section>
+
+      <section class="section growth-section" id="growth-ideas" aria-labelledby="growth-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">10 more money levers</p>
+            <h2 id="growth-title">Next upgrades after payment links are connected.</h2>
+          </div>
+          <div class="growth-grid" id="growth-grid"></div>
+        </div>
+      </section>
+
+      <section class="section launch-section" id="launch-readiness" aria-labelledby="launch-title">
+        <div class="section-inner launch-layout">
+          <div>
+            <p class="eyebrow">Connector plan</p>
+            <h2 id="launch-title">Ready for Claude to wire into live buying paths.</h2>
+            <p>
+              The sales system is packaged around an authorization-go workflow: confirm the
+              subdomain, attach payment, paid booking, and intake, then record results in
+              the challenge ledger.
+            </p>
+          </div>
+          <div class="readiness-list" id="readiness-list"></div>
+        </div>
+      </section>
+
+      <section class="section final-cta" aria-labelledby="final-title">
+        <div class="section-inner final-layout">
+          <div>
+            <p class="eyebrow">Local preview status</p>
+            <h2 id="final-title">Approve the connectors, then the page can sell instead of preview.</h2>
+          </div>
+          <div class="button-row">
+            <button class="button button-primary" type="button" data-open-flow="ai-revenue-sprint">
+              Reserve $99 Sprint deposit
+            </button>
+            <button class="button button-secondary" type="button" data-copy-claude>
+              Copy Claude handoff
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="flow-modal" id="flow-modal" role="dialog" aria-modal="true" aria-labelledby="flow-title" hidden>
+      <div class="modal-panel">
+        <button class="modal-close" type="button" data-close-flow aria-label="Close buyer flow preview">x</button>
+        <p class="eyebrow" id="flow-status">Connector preview</p>
+        <h2 id="flow-title">Buyer flow preview</h2>
+        <p id="flow-copy"></p>
+        <ol class="flow-steps" id="flow-steps"></ol>
+        <textarea class="handoff-box" id="handoff-box" readonly></textarea>
+        <div class="modal-actions">
+          <button class="button button-primary" type="button" data-copy-claude>Copy Claude handoff</button>
+          <button class="button button-secondary" type="button" data-close-flow>Keep reviewing</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js?v=20260722b"></script>
+  </body>
+</html>

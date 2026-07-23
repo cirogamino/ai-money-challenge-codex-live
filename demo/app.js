@@ -1,28 +1,28 @@
-import { generateAudit } from './lib/opportunityEngine.mjs?v=20260707-launch-console';
-import { generateLaunchPlan } from './lib/launchPlan.mjs?v=20260707-launch-console';
-import { copyText } from './lib/clipboard.mjs?v=20260707-launch-console';
+import { generateAudit } from './lib/opportunityEngine.mjs?v=20260723b';
+import { generateLaunchPlan } from './lib/launchPlan.mjs?v=20260723b';
+import { copyText } from './lib/clipboard.mjs?v=20260723b';
 
 const presets = {
   agency: {
-    businessType: 'boutique recruiting agency',
-    audience: 'founders hiring their first sales team',
-    bottleneck: 'manual candidate screening and slow follow-up',
-    monthlyRevenue: 24000,
+    businessType: 'NorthStar Roof Care',
+    audience: 'homeowners waiting on storm-damage estimates',
+    bottleneck: 'quote follow-up after busy storm weeks',
+    monthlyRevenue: 38000,
     offerPrice: 19,
   },
   coach: {
-    businessType: 'AI adoption coach',
-    audience: 'solo founders overwhelmed by tool choices',
-    bottleneck: 'proposal writing and stalled sales conversations',
-    monthlyRevenue: 18000,
-    offerPrice: 29,
+    businessType: 'BrightPath Admissions',
+    audience: 'trade-school applicants who started but did not finish enrollment',
+    bottleneck: 'slow application follow-up and repeated financial-aid questions',
+    monthlyRevenue: 52000,
+    offerPrice: 19,
   },
   clinic: {
-    businessType: 'cash-pay wellness clinic',
-    audience: 'clinic owners losing leads after consult requests',
-    bottleneck: 'slow lead follow-up and repeated customer questions',
-    monthlyRevenue: 42000,
-    offerPrice: 39,
+    businessType: 'Harbor Dental Implants',
+    audience: 'patients who requested implant pricing but never booked',
+    bottleneck: 'lead follow-up and unanswered treatment questions',
+    monthlyRevenue: 76000,
+    offerPrice: 19,
   },
 };
 

@@ -6,6 +6,7 @@ import {
   getFeaturedMetrics,
   getGrowthIdeas,
   getGoButtonDashboard,
+  getLaunchPreviewDeck,
   getLaunchReadiness,
   getLaunchTimeline,
   getProjectProgress,
@@ -17,7 +18,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260723a';
+} from './lib/catalog.mjs?v=20260723b';
 import {
   getPaymentProfitUpgrades,
   getPaymentReadiness,
@@ -25,7 +26,7 @@ import {
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260723a';
+} from './lib/paymentRoutes.mjs?v=20260723b';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -33,6 +34,7 @@ const handoffText = buildClaudeDeploymentAsk();
 const revenueFocus = getRevenueFocus();
 const proofTransformation = getProofTransformation();
 const projectProgress = getProjectProgress();
+const launchPreviewDeck = getLaunchPreviewDeck();
 const launchTimeline = getLaunchTimeline();
 const goButtonDashboard = getGoButtonDashboard();
 const snapshotDelivery = getSnapshotDeliveryPlan();
@@ -56,6 +58,10 @@ const timelineEta = document.querySelector('#launch-timeline-eta');
 const timelineDone = document.querySelector('#launch-timeline-done');
 const timelineSpeedups = document.querySelector('#launch-timeline-speedups');
 const timelinePhases = document.querySelector('#launch-timeline-phases');
+const launchPreviewIntro = document.querySelector('#launch-preview-intro');
+const launchPreviewGrid = document.querySelector('#launch-preview-grid');
+const fulfillmentPreviewGrid = document.querySelector('#fulfillment-preview-grid');
+const proofStackGrid = document.querySelector('#proof-stack-grid');
 const goButtonGrid = document.querySelector('#go-button-grid');
 const goButtonPercent = document.querySelector('#go-button-percent');
 const goButtonStatus = document.querySelector('#go-button-status');
@@ -169,6 +175,63 @@ function renderLaunchTimeline() {
           <strong>${escapeHtml(phase.name)}</strong>
           <p>${escapeHtml(phase.output)}</p>
           <small>${escapeHtml(phase.window)}</small>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderLaunchPreviewDeck() {
+  launchPreviewIntro.textContent = launchPreviewDeck.intro;
+  launchPreviewGrid.innerHTML = launchPreviewDeck.productMockups
+    .map(
+      (mockup) => `
+        <article class="launch-mockup-card">
+          <div class="mockup-card-top">
+            <span>${escapeHtml(launchPreviewDeck.contextLabel)}</span>
+            <strong>${escapeHtml(mockup.price)}</strong>
+          </div>
+          <h3>${escapeHtml(mockup.product)}</h3>
+          <div class="mockup-window">
+            <div class="mockup-window-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="mockup-window-body">
+              <small>${escapeHtml(mockup.sampleBusiness)}</small>
+              <strong>${escapeHtml(mockup.artifactTitle)}</strong>
+              <em>${escapeHtml(mockup.badge)}</em>
+              <ul>
+                ${mockup.visualLines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+          <p>${escapeHtml(mockup.buyerPromise)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  fulfillmentPreviewGrid.innerHTML = launchPreviewDeck.fulfillmentPreview
+    .map(
+      (item) => `
+        <article class="fulfillment-card">
+          <span>${escapeHtml(item.status)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  proofStackGrid.innerHTML = launchPreviewDeck.proofCards
+    .map(
+      (card) => `
+        <article class="proof-stack-card">
+          <span>${escapeHtml(card.label)}</span>
+          <strong>${escapeHtml(card.title)}</strong>
+          <p>${escapeHtml(card.detail)}</p>
         </article>
       `,
     )
@@ -582,6 +645,7 @@ renderMetrics();
 renderProof();
 renderProjectProgress();
 renderLaunchTimeline();
+renderLaunchPreviewDeck();
 renderGoButtonDashboard();
 renderPaymentOperatingSystem();
 renderSnapshotDelivery();

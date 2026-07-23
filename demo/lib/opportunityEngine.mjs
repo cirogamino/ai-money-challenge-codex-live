@@ -69,6 +69,7 @@ function normalizeInput(input = {}) {
 function pluralizeBusiness(type) {
   const trimmed = type.trim();
   const lower = trimmed.toLowerCase();
+  if (lower.endsWith(' care')) return trimmed;
   if (lower.endsWith('agency')) return `${trimmed.slice(0, -1)}ies`;
   if (/(ch|sh|s|x|z)$/i.test(trimmed)) return `${trimmed}es`;
   if (/[^aeiou]y$/i.test(trimmed)) return `${trimmed.slice(0, -1)}ies`;

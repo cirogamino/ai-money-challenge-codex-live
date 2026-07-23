@@ -994,6 +994,153 @@ h3 {
   gap: 0.6rem;
 }
 
+.launch-preview-section {
+  background: #090f15;
+}
+
+.launch-preview-grid,
+.fulfillment-grid,
+.proof-stack-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.launch-mockup-card,
+.fulfillment-card,
+.proof-stack-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+}
+
+.launch-mockup-card {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
+}
+
+.mockup-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.mockup-card-top span,
+.fulfillment-card span,
+.proof-stack-card span {
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.mockup-card-top strong {
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.mockup-window {
+  overflow: hidden;
+  border: 1px solid rgba(56, 215, 255, 0.25);
+  border-radius: 8px;
+  background: #080d13;
+}
+
+.mockup-window-bar {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--line);
+  background: #101824;
+}
+
+.mockup-window-bar span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cyan);
+}
+
+.mockup-window-bar span:nth-child(2) {
+  background: var(--gold);
+}
+
+.mockup-window-bar span:nth-child(3) {
+  background: var(--green);
+}
+
+.mockup-window-body {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem;
+}
+
+.mockup-window-body small,
+.mockup-window-body em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.mockup-window-body strong,
+.fulfillment-card strong,
+.proof-stack-card strong {
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.mockup-window-body em {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.28rem 0.42rem;
+  border: 1px solid rgba(96, 211, 148, 0.35);
+  border-radius: 6px;
+  color: var(--green);
+  background: rgba(96, 211, 148, 0.08);
+}
+
+.mockup-window-body ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding-left: 1rem;
+  color: #d7e0ea;
+  line-height: 1.45;
+}
+
+.launch-mockup-card p,
+.fulfillment-card p,
+.proof-stack-card p {
+  margin: 0;
+  color: #d7e0ea;
+  line-height: 1.55;
+}
+
+.fulfillment-preview-section {
+  background: #0d1218;
+}
+
+.fulfillment-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.fulfillment-card,
+.proof-stack-card {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.proof-stack-section {
+  background: #091018;
+}
+
 .upgrade-card {
   display: grid;
   align-content: start;
@@ -1242,6 +1389,9 @@ h3 {
   .product-grid,
   .niche-grid,
   .checkout-grid,
+  .launch-preview-grid,
+  .fulfillment-grid,
+  .proof-stack-grid,
   .timeline-header,
   .timeline-eta-grid,
   .timeline-board,

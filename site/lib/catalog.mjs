@@ -11,18 +11,18 @@ export const products = [
     title: 'AI Opportunity Snapshot',
     price: '$19',
     promise:
-      'A low-risk tripwire audit for buyers who are not ready for the Sprint yet but want one clear AI offer to test.',
-    primaryOutcome: 'Find the first sellable AI offer without burning days in research.',
-    audience: 'Solo operators, creators, and local service owners who want a fast AI-product angle.',
-    speedToDollar: 'Fastest path: buy the Snapshot, see the offer, then upgrade if the opportunity is real.',
-    profitPotential: '30-day role: entry product, trust builder, and lead source for the Sprint.',
+      'A paid 15-minute diagnostic that turns one messy workflow into a scored AI opportunity, buyer promise, and next checkout step.',
+    primaryOutcome: 'Find the first sellable AI offer without burning days in research or guesswork.',
+    audience: 'Owners with one leaky workflow: missed quotes, slow follow-up, messy intake, or stale lead lists.',
+    speedToDollar: 'Fastest path: buy the Snapshot, get the sample-grade report, then upgrade the best opportunity into a Sprint.',
+    profitPotential: '30-day role: entry product, proof builder, and low-friction feeder for the Sprint.',
     includes: [
       'One-page opportunity score',
       'Offer ladder recommendation',
       'Buyer pain map',
       'Launch copy starter pack',
     ],
-    cta: 'Buy Snapshot after approval',
+    cta: 'Buy $19 Snapshot',
     checkoutAction: 'Polar Checkout Link - POLAR_SNAPSHOT_CHECKOUT_URL',
   },
   {
@@ -30,10 +30,10 @@ export const products = [
     type: 'Recurring membership',
     title: 'AI Deal Room',
     price: '$49/mo',
-    promise: 'A weekly operating room for turning AI ideas into small offers, sales pages, and proof-of-demand receipts.',
-    primaryOutcome: 'Keep shipping one small AI offer every week with reusable templates and group accountability.',
-    audience: 'Builders who want a repeatable rhythm instead of another idea graveyard.',
-    speedToDollar: 'Fastest path: convert snapshot buyers who want weekly help implementing.',
+    promise: 'A weekly build room with offer templates, teardown notes, and launch checklists for people turning AI ideas into receipts.',
+    primaryOutcome: 'Keep shipping one small AI offer every week with reusable templates and a visible deal pipeline.',
+    audience: 'Builders who want a repeatable launch rhythm instead of another folder full of unused prompts.',
+    speedToDollar: 'Fastest path: convert Snapshot buyers who want weekly help implementing.',
     profitPotential: '30-day role: recurring base that compounds after the first sales push.',
     includes: [
       'Weekly offer teardown',
@@ -41,7 +41,7 @@ export const products = [
       'Proof-of-demand checklist',
       'Member-only launch console',
     ],
-    cta: 'Join founding list',
+    cta: 'Join Deal Room',
     checkoutAction: 'Polar recurring Checkout Link - POLAR_DEAL_ROOM_CHECKOUT_URL',
   },
   {
@@ -50,8 +50,8 @@ export const products = [
     title: '48-Hour AI Revenue Sprint',
     price: '$1,500',
     promise:
-      'The primary cash offer: a focused 48-hour sprint that turns one expertise, audience, or service into a sellable AI-powered offer.',
-    primaryOutcome: 'Leave with a page, intake flow, fulfillment template, and launch sequence ready for authorization.',
+      'A focused 48-hour build sprint that turns one business workflow into a sellable AI-assisted offer system.',
+    primaryOutcome: 'Leave with a sales page, intake flow, delivery packet, checkout plan, and launch sequence ready for authorization.',
     audience: 'Business owners with an audience, service, or skill that can be packaged quickly.',
     speedToDollar: 'Fastest path: collect a paid deposit, qualify the buyer, then finish the sprint delivery.',
     profitPotential: '30-day role: one sale can win the challenge if delivery stays tight.',
@@ -92,18 +92,19 @@ export function getSnapshotDeliveryPlan() {
     price: '$19',
     deliverySpeed: 'Instant after payment',
     promise:
-      'The buyer pays, enters one business idea, and immediately receives a compact action packet that can upsell into the Sprint.',
+      'The buyer pays, enters one business workflow, and immediately receives a compact action packet that can upsell into the Sprint.',
     outputs: [
       'AI opportunity score',
-      'Buyer pain map',
-      'Offer ladder recommendation',
-      'Launch copy starter pack',
+      'Revenue leak snapshot',
+      'Buyer promise draft',
+      'Checkout-ready offer ladder',
+      'First outreach message',
       'Sprint upsell credit',
     ],
     steps: [
       'Payment confirms the $19 Snapshot purchase.',
-      'Buyer enters one idea, audience, and current offer context.',
-      'Snapshot engine returns score, pain map, product ladder, and first launch copy.',
+      'Buyer enters one workflow, audience, bottleneck, and current offer context.',
+      'Snapshot engine returns score, revenue leak, product ladder, and first launch copy.',
       'Thank-you page offers the $19 as credit toward the $99 Sprint deposit.',
       'Ledger packet records cash received, product sold, and delivery status.',
     ],
@@ -422,6 +423,109 @@ export function getGoButtonDashboard() {
   };
 }
 
+export function getLaunchPreviewDeck() {
+  return {
+    contextLabel: 'Founder preview samples',
+    headline: 'The launch now has believable sample artifacts for each offer.',
+    intro:
+      'These panels are realistic founder-preview samples, not claimed customer results. They make the site feel launch-ready today and can be swapped for real receipts after the first buyers come in.',
+    productMockups: [
+      {
+        product: 'AI Opportunity Snapshot',
+        price: '$19',
+        sampleBusiness: 'NorthStar Roof Care',
+        artifactTitle: 'Quote Rescue Snapshot',
+        badge: '84/100 opportunity score',
+        buyerPromise: 'Recover missed estimate follow-up without hiring a coordinator.',
+        visualLines: [
+          'Leak found: 17 warm quote requests with no 48-hour follow-up',
+          'First offer: $19 quote-rescue workflow map',
+          'Upsell: $99 Sprint deposit credited from Snapshot purchase',
+        ],
+      },
+      {
+        product: 'AI Deal Room',
+        price: '$49/mo',
+        sampleBusiness: 'BrightPath Admissions',
+        artifactTitle: 'Weekly Deal Board',
+        badge: '4 launch assets queued',
+        buyerPromise: 'Turn one stalled service idea per week into a sellable mini-offer.',
+        visualLines: [
+          'Monday: offer teardown',
+          'Wednesday: checkout copy and objection bank',
+          'Friday: proof-of-demand scorecard',
+        ],
+      },
+      {
+        product: '48-Hour AI Revenue Sprint',
+        price: '$1,500',
+        sampleBusiness: 'Harbor Dental Implants',
+        artifactTitle: 'Patient Lead Rescue Sprint',
+        badge: '$99 deposit path',
+        buyerPromise: 'Ship a page, intake, follow-up sequence, and delivery packet in one weekend.',
+        visualLines: [
+          'Day 1: buyer promise, intake, page, checkout',
+          'Day 2: fulfillment packet, launch copy, ledger routing',
+          'After: 7-day follow-up sequence and Deal Room handoff',
+        ],
+      },
+    ],
+    fulfillmentPreview: [
+      {
+        title: 'Checkout receipt',
+        status: 'Ready after URL install',
+        detail: 'Buyer sees one processor, one price, and one next step. No split-payment confusion on the first launch.',
+      },
+      {
+        title: 'Smart intake',
+        status: 'One form planned',
+        detail: 'The same intake captures workflow, buyer, bottleneck, revenue value, and urgency for every offer.',
+      },
+      {
+        title: 'Delivery packet',
+        status: 'Sample structure built',
+        detail: 'Snapshot buyers receive score, leak, offer ladder, launch copy, and Sprint credit immediately after payment.',
+      },
+      {
+        title: 'Ledger row',
+        status: 'Connector next',
+        detail: 'Every paid route maps to product, processor, amount, date, delivery status, and challenge scoreboard proof.',
+      },
+    ],
+    proofCards: [
+      {
+        label: 'Sample buyer situation',
+        title: 'NorthStar Roof Care has quote requests slipping through follow-up gaps.',
+        detail: 'The Snapshot turns that one pain into a Quote Rescue offer and a clear Sprint upgrade path.',
+      },
+      {
+        label: 'Sample delivery promise',
+        title: 'The buyer leaves with one paid promise and a first message to send.',
+        detail: 'No vague AI advice: every sample output ends with a buyer, pain, offer, price, and next action.',
+      },
+      {
+        label: 'Sample Sprint finish line',
+        title: 'A weekend build should end with a page, intake, checkout, delivery packet, and launch copy.',
+        detail: 'This gives the high-ticket offer a visible finish line before the first real case study exists.',
+      },
+    ],
+    speedToLaunch: [
+      {
+        title: 'Replace samples with receipts',
+        detail: 'After the first sale, swap the founder-preview cards for real buyer screenshots, delivery timestamps, and ledger proof.',
+      },
+      {
+        title: 'Record one founder video',
+        detail: 'Use the finished script on the page: who it is for, what gets delivered, why three Sprint slots exist, and what happens after payment.',
+      },
+      {
+        title: 'Keep sample labels honest',
+        detail: 'The mockups should feel polished, but labels stay clear so the launch builds trust instead of pretending to have results it does not have yet.',
+      },
+    ],
+  };
+}
+
 export function getCheckoutState() {
   const sprintDeposit = getSprintDepositOffer();
   const paymentReadiness = getPaymentReadiness();
@@ -484,9 +588,9 @@ export function getFeaturedMetrics() {
 export function getRevenueFocus() {
   return {
     primaryProductSlug: 'ai-revenue-sprint',
-    headline: 'Turn one AI idea into a sellable offer in 48 hours.',
+    headline: 'Turn one leaky workflow into a sellable AI offer in 48 hours.',
     supportingCopy:
-      'The fastest path to winning the 30-day scoreboard is not chasing tiny purchases. It is qualifying one buyer who can pay for the 48-Hour AI Revenue Sprint, while the $19 Snapshot catches lower-intent buyers.',
+      'The fastest path to the 30-day scoreboard is one premium buyer with a real workflow pain. The $19 Snapshot proves the opportunity, the $49 Deal Room keeps momentum, and the Sprint turns the best workflow into a launch-ready offer system.',
     primaryCta: 'Reserve $99 Sprint deposit',
     secondaryCta: 'Try the $19 Snapshot first',
     scarcity: {
@@ -520,10 +624,10 @@ export function getTargetNiches() {
 
 export function getProofTransformation() {
   return {
-    before: 'Messy AI idea, unclear buyer, no price, no payment path.',
-    after: 'One buyer, one urgent problem, one paid promise, one checkout-ready offer ladder.',
-    demoInput: 'I know AI is valuable, but I do not know what to sell.',
-    demoOutput: 'Pick one buyer, score urgency, define one paid promise, then route to Snapshot or Sprint.',
+    before: 'Warm roofing quote requests scattered across calls, texts, and inboxes with no reliable follow-up owner.',
+    after: 'Quote Rescue Snapshot: one buyer, one revenue leak, one $19 diagnostic, and a $99 Sprint deposit path.',
+    demoInput: 'NorthStar Roof Care is losing estimates after busy storm weeks and needs a follow-up workflow.',
+    demoOutput: 'Score the quote leak, write the rescue promise, map the first automation, then route to Snapshot or Sprint.',
   };
 }
 

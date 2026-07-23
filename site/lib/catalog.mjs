@@ -168,7 +168,7 @@ export function getSuperChecklist() {
           label: 'Payment link connector packet',
           owner: 'Codex',
           status: 'done',
-          detail: 'Exact public checkout URL slots are defined for Stripe and Polar.',
+          detail: 'Exact public checkout URL slots, setup links, and installer command are defined for Stripe and Polar.',
         },
         {
           label: 'Live checkout URLs',
@@ -280,8 +280,8 @@ export function getGoButtonDashboard() {
       {
         name: 'Payment link',
         state: 'in_progress',
-        owner: 'Claude orchestrator',
-        action: 'Drop the four public Stripe and Polar checkout URLs into the prepared slots.',
+        owner: 'Codex and Claude orchestrator',
+        action: 'Use the setup buttons, then install the four public checkout URLs with the safe installer.',
       },
       {
         name: '$99 Sprint deposit',
@@ -331,7 +331,7 @@ export function getCheckoutState() {
     liveLabel: paymentReadiness.mode === 'live' ? 'Live checkout' : 'Connector preview',
     pendingConnectors: ['Stripe URL', 'Polar URL', 'intake form', 'ledger sync', 'subdomain routing'],
     buyerMessage:
-      'Payments are not live in this preview until the public Stripe and Polar checkout URLs are visible. API keys and webhook secrets stay out of the static site.',
+      'Payments are not live in this preview until the public Stripe and Polar checkout URLs are installed. API keys and webhook secrets stay out of the static site.',
     actions: [
       {
         label: 'Buy $19 Snapshot',
@@ -542,7 +542,7 @@ export function getLaunchReadiness() {
       {
         name: 'Payment link',
         owner: 'Codex build packet',
-        status: 'Use Polar Checkout Links for Snapshot and Deal Room; use Stripe Payment Links or invoices for Sprint payments.',
+        status: 'Use the on-page setup buttons and safe installer for Polar Checkout Links, Stripe Payment Links, and hosted invoices.',
       },
       {
         name: 'Sprint deposit',
@@ -567,7 +567,7 @@ export function buildClaudeDeploymentAsk() {
   return [
     'Claude/orchestrator handoff request:',
     'Confirm whether the Codex/ChatGPT sales site should live at codex.cedogamino.com or chatgtp.cedogamino.com.',
-    'After Ciro authorizes the final connector stack, wire the chosen subdomain, Polar Snapshot checkout, Polar Deal Room checkout, Stripe $99 Sprint deposit, Stripe Sprint balance path, intake form, instant Snapshot delivery, and ledger update.',
+    'After Ciro authorizes the final connector stack, use the setup buttons or PAYMENT_CONNECTOR_PLAN.md to wire the chosen subdomain, Polar Snapshot checkout, Polar Deal Room checkout, Stripe $99 Sprint deposit, Stripe Sprint balance path, intake form, instant Snapshot delivery, and ledger update.',
     'Goal: Ciro should only need to authorize and press go, not manually post, DM, or stitch systems together.',
     '',
     buildPaymentConnectorAsk(),

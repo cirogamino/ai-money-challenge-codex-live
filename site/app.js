@@ -16,7 +16,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260722d';
+} from './lib/catalog.mjs?v=20260722e';
 import {
   getPaymentProfitUpgrades,
   getPaymentReadiness,
@@ -24,7 +24,7 @@ import {
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260722d';
+} from './lib/paymentRoutes.mjs?v=20260722e';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -72,10 +72,12 @@ const roiOutput = document.querySelector('#roi-output');
 const quizCard = document.querySelector('.quiz-card');
 const quizResult = document.querySelector('#quiz-result');
 const modal = document.querySelector('#flow-modal');
+const flowStatus = document.querySelector('#flow-status');
 const flowTitle = document.querySelector('#flow-title');
 const flowCopy = document.querySelector('#flow-copy');
 const flowSteps = document.querySelector('#flow-steps');
 const handoffBox = document.querySelector('#handoff-box');
+let currentCopyText = handoffText;
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -186,9 +188,18 @@ function renderPaymentOperatingSystem() {
           ${
             route.isLive
               ? `<a class="button button-primary" href="${escapeHtml(route.checkoutUrl)}">Open checkout</a>`
-              : `<button class="button button-secondary" type="button" data-open-flow="${escapeHtml(route.productSlug)}">${escapeHtml(route.buttonLabel)}</button>`
+              : `
+                <div class="route-actions">
+                  <a class="button button-primary" href="${escapeHtml(route.setupTarget.url)}" target="_blank" rel="noreferrer">
+                    ${escapeHtml(route.setupTarget.label)}
+                  </a>
+                  <button class="button button-secondary" type="button" data-copy-route="${escapeHtml(route.slug)}">
+                    Copy setup spec
+                  </button>
+                </div>
+              `
           }
-          <small>${escapeHtml(route.nextAction)}</small>
+          <small>${escapeHtml(route.nextAction)} <a href="${escapeHtml(route.docsUrl)}" target="_blank" rel="noreferrer">Docs</a></small>
         </article>
       `,
     )
@@ -276,6 +287,7 @@ function renderCheckoutActions() {
   checkoutGrid.innerHTML = checkoutState.actions
     .map((action) => {
       const product = getProductBySlug(action.productSlug);
+      const route = getPaymentRouteBySlug(action.routeSlug);
 
       return `
         <article class="checkout-card">
@@ -286,7 +298,16 @@ function renderCheckoutActions() {
           ${
             action.isLive
               ? `<a class="button button-primary" href="${escapeHtml(action.checkoutUrl)}">${escapeHtml(action.buttonLabel)}</a>`
-              : `<button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">${escapeHtml(checkoutState.liveLabel)}</button>`
+              : `
+                <div class="route-actions">
+                  <a class="button button-primary" href="${escapeHtml(route.setupTarget.url)}" target="_blank" rel="noreferrer">
+                    ${escapeHtml(route.setupTarget.label)}
+                  </a>
+                  <button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">
+                    Preview flow
+                  </button>
+                </div>
+              `
           }
         </article>
       `;
@@ -405,18 +426,22 @@ function openFlow(slug) {
   const paymentStep = route
     ? `${route.processorLabel} ${route.checkoutType} collects cash once ${route.configKey} contains the public checkout URL.`
     : `${product.checkoutAction} collects cash or deposit once the connector is authorized.`;
+  const setupSteps = route?.isLive ? [] : route?.setupSteps ?? [];
 
   flowTitle.textContent = `${product.title} - ${route?.displayStatus ?? checkoutState.liveLabel}`;
+  flowStatus.textContent = route?.isLive ? 'Live checkout' : 'Connector setup';
   flowCopy.textContent = `${product.primaryOutcome} ${checkoutState.buyerMessage}`;
   flowSteps.innerHTML = [
     firstStep,
     paymentStep,
+    ...setupSteps,
     'Intake captures buyer context and triggers fulfillment.',
     'Claude receives the status packet so Ciro only approves the go-live step.',
   ]
     .map((step) => `<li>${escapeHtml(step)}</li>`)
     .join('');
-  handoffBox.value = handoffText;
+  currentCopyText = route?.setupCopy ?? handoffText;
+  handoffBox.value = currentCopyText;
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
   modal.querySelector('[data-close-flow]').focus();
@@ -428,10 +453,28 @@ function closeFlow() {
 }
 
 async function copyHandoff() {
-  handoffBox.value = handoffText;
+  handoffBox.value = currentCopyText;
 
   try {
-    await navigator.clipboard.writeText(handoffText);
+    await navigator.clipboard.writeText(currentCopyText);
+  } catch {
+    handoffBox.focus();
+    handoffBox.select();
+  }
+}
+
+async function copyRouteSetup(slug) {
+  const route = getPaymentRouteBySlug(slug);
+
+  if (!route) {
+    return;
+  }
+
+  currentCopyText = route.setupCopy;
+  handoffBox.value = currentCopyText;
+
+  try {
+    await navigator.clipboard.writeText(currentCopyText);
   } catch {
     handoffBox.focus();
     handoffBox.select();
@@ -442,6 +485,7 @@ document.addEventListener('click', (event) => {
   const openButton = event.target.closest('[data-open-flow]');
   const closeButton = event.target.closest('[data-close-flow]');
   const copyButton = event.target.closest('[data-copy-claude]');
+  const routeCopyButton = event.target.closest('[data-copy-route]');
 
   if (openButton) {
     openFlow(openButton.dataset.openFlow);
@@ -453,6 +497,10 @@ document.addEventListener('click', (event) => {
 
   if (copyButton) {
     copyHandoff();
+  }
+
+  if (routeCopyButton) {
+    copyRouteSetup(routeCopyButton.dataset.copyRoute);
   }
 });
 

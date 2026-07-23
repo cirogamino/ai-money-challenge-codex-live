@@ -11,6 +11,12 @@ const sharedMetadata = {
   variant: 'codex-live',
 };
 
+const liveBaseUrl = 'https://cirogamino.github.io/ai-money-challenge-codex-live';
+const siteReturnUrl = `${liveBaseUrl}/site/#instant-checkout`;
+const polarCheckoutLinksUrl = 'https://polar.sh/to/dashboard/products/checkout-links';
+const stripePaymentLinksUrl = 'https://dashboard.stripe.com/payment-links/create/standard-pricing';
+const stripeInvoiceUrl = 'https://dashboard.stripe.com/invoices/create';
+
 export const paymentRoutes = [
   {
     slug: 'ai-opportunity-snapshot',
@@ -23,8 +29,20 @@ export const paymentRoutes = [
     configKey: 'POLAR_SNAPSHOT_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_SNAPSHOT_CHECKOUT_URL,
     buttonLabel: 'Add Polar link',
-    successUrl: '/site/success/snapshot?checkout_id={CHECKOUT_ID}',
-    returnUrl: '/site/#instant-checkout',
+    successUrl: `${liveBaseUrl}/site/success/snapshot?checkout_id={CHECKOUT_ID}`,
+    returnUrl: siteReturnUrl,
+    docsUrl: 'https://polar.sh/docs/features/checkout/links',
+    setupTarget: {
+      label: 'Create Polar link',
+      url: polarCheckoutLinksUrl,
+    },
+    setupSteps: [
+      'Open Polar Checkout Links and click New Link.',
+      'Select or create AI Opportunity Snapshot as a one-time product priced at $19 USD.',
+      'Set the success URL and return URL from this route card.',
+      'Add the metadata keys shown here so orders reconcile cleanly.',
+      'Copy the persistent Checkout Link URL into POLAR_SNAPSHOT_CHECKOUT_URL.',
+    ],
     reason:
       'Best fit for the low-ticket digital product because Polar checkout links can sell productized digital offers with order, subscription, benefit, invoice, and customer state records.',
     nextAction: 'Add the public Polar Checkout Link URL to POLAR_SNAPSHOT_CHECKOUT_URL.',
@@ -46,8 +64,20 @@ export const paymentRoutes = [
     configKey: 'POLAR_DEAL_ROOM_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_DEAL_ROOM_CHECKOUT_URL,
     buttonLabel: 'Add Polar link',
-    successUrl: '/site/success/deal-room?checkout_id={CHECKOUT_ID}',
-    returnUrl: '/site/#instant-checkout',
+    successUrl: `${liveBaseUrl}/site/success/deal-room?checkout_id={CHECKOUT_ID}`,
+    returnUrl: siteReturnUrl,
+    docsUrl: 'https://polar.sh/docs/features/checkout/links',
+    setupTarget: {
+      label: 'Create Polar recurring link',
+      url: polarCheckoutLinksUrl,
+    },
+    setupSteps: [
+      'Open Polar Checkout Links and click New Link.',
+      'Select or create AI Deal Room as a recurring product priced at $49 USD per month.',
+      'Set the success URL and return URL from this route card.',
+      'Keep the checkout link single-product for the first launch.',
+      'Copy the persistent Checkout Link URL into POLAR_DEAL_ROOM_CHECKOUT_URL.',
+    ],
     reason:
       'Best fit for membership because Polar creates subscriptions from recurring products, keeps benefits in sync, and gives customers a portal for receipts and payment updates.',
     nextAction: 'Add the public Polar recurring Checkout Link URL to POLAR_DEAL_ROOM_CHECKOUT_URL.',
@@ -69,8 +99,20 @@ export const paymentRoutes = [
     configKey: 'STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK',
     checkoutUrl: publicCheckoutUrls.STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK,
     buttonLabel: 'Add Stripe link',
-    successUrl: '/site/success/sprint-deposit?session_id={CHECKOUT_SESSION_ID}',
-    returnUrl: '/site/#instant-checkout',
+    successUrl: `${liveBaseUrl}/site/success/sprint-deposit?session_id={CHECKOUT_SESSION_ID}`,
+    returnUrl: siteReturnUrl,
+    docsUrl: 'https://docs.stripe.com/payment-links/create',
+    setupTarget: {
+      label: 'Create Stripe link',
+      url: stripePaymentLinksUrl,
+    },
+    setupSteps: [
+      'Open Stripe Payment Links and create a standard fixed-price link.',
+      'Create or select 48-Hour AI Revenue Sprint deposit priced at $99 USD.',
+      'Set after-completion behavior to redirect to this route success URL.',
+      'Add client_reference_id or metadata for challenge, operator, variant, processor, and offer_slug.',
+      'Copy the buy.stripe.com URL into STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK.',
+    ],
     reason:
       'Best fit for the first high-ticket action because Stripe Payment Links and hosted Checkout are fast, reusable, low-code, and optimized for dynamic payment methods.',
     nextAction: 'Add the public Stripe Payment Link URL to STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK.',
@@ -92,8 +134,20 @@ export const paymentRoutes = [
     configKey: 'STRIPE_SPRINT_BALANCE_PAYMENT_LINK',
     checkoutUrl: publicCheckoutUrls.STRIPE_SPRINT_BALANCE_PAYMENT_LINK,
     buttonLabel: 'Add Stripe link',
-    successUrl: '/site/success/sprint-balance?session_id={CHECKOUT_SESSION_ID}',
-    returnUrl: '/site/#instant-checkout',
+    successUrl: `${liveBaseUrl}/site/success/sprint-balance?session_id={CHECKOUT_SESSION_ID}`,
+    returnUrl: siteReturnUrl,
+    docsUrl: 'https://docs.stripe.com/invoicing/hosted-invoice-page',
+    setupTarget: {
+      label: 'Create Stripe invoice',
+      url: stripeInvoiceUrl,
+    },
+    setupSteps: [
+      'Open Stripe Invoices for the qualified Sprint buyer.',
+      'Create a Hosted Invoice Page for the $1,401 remaining balance or full $1,500 amount.',
+      'Enable the hosted payment page and copy the invoice.stripe.com URL when available.',
+      'Use the same challenge and offer metadata in the memo or internal description.',
+      'Copy the hosted invoice URL into STRIPE_SPRINT_BALANCE_PAYMENT_LINK if it should be public.',
+    ],
     reason:
       'Best fit for high-ticket services because Stripe can use hosted invoices, Payment Links, receipts, exports, and later webhook-driven reconciliation.',
     nextAction: 'Add the public Stripe invoice or balance Payment Link URL to STRIPE_SPRINT_BALANCE_PAYMENT_LINK.',
@@ -106,14 +160,40 @@ export const paymentRoutes = [
   },
 ];
 
+function buildMetadataText(metadata) {
+  return Object.entries(metadata)
+    .map(([key, value]) => `${key}=${value}`)
+    .join(', ');
+}
+
+function buildRouteSetupCopy(route) {
+  return [
+    `${route.processorLabel} setup for ${route.offer}`,
+    `Amount: ${route.amount}`,
+    `Checkout type: ${route.checkoutType}`,
+    `Config slot: ${route.configKey}`,
+    `Setup target: ${route.setupTarget.url}`,
+    `Docs: ${route.docsUrl}`,
+    `Success URL: ${route.successUrl}`,
+    `Return URL: ${route.returnUrl}`,
+    `Metadata: ${buildMetadataText(route.metadata)}`,
+    '',
+    'Steps:',
+    ...route.setupSteps.map((step, index) => `${index + 1}. ${step}`),
+  ].join('\n');
+}
+
 function withRouteStatus(route) {
   const isLive = /^https:\/\//.test(route.checkoutUrl);
+  const metadataText = buildMetadataText(route.metadata);
 
   return {
     ...route,
     isLive,
     displayStatus: isLive ? 'Live checkout' : 'Connector preview',
     missingLabel: isLive ? '' : `Missing ${route.configKey}`,
+    metadataText,
+    setupCopy: buildRouteSetupCopy(route),
   };
 }
 

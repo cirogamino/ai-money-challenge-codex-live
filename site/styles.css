@@ -312,6 +312,17 @@ h3 {
   color: var(--text);
 }
 
+.route-actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.route-actions .button {
+  flex: 1 1 150px;
+}
+
 .metric-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -607,7 +618,8 @@ h3 {
 .payment-summary p,
 .processor-card p,
 .payment-route-card p,
-.payment-route-card small {
+.payment-route-card small,
+.checkout-card small {
   margin: 0;
   color: #d7e0ea;
   line-height: 1.55;

@@ -7,6 +7,7 @@ import {
   getGrowthIdeas,
   getGoButtonDashboard,
   getLaunchReadiness,
+  getLaunchTimeline,
   getProjectProgress,
   getProofTransformation,
   getQualificationResult,
@@ -16,7 +17,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260722e';
+} from './lib/catalog.mjs?v=20260723a';
 import {
   getPaymentProfitUpgrades,
   getPaymentReadiness,
@@ -24,7 +25,7 @@ import {
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260722e';
+} from './lib/paymentRoutes.mjs?v=20260723a';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -32,6 +33,7 @@ const handoffText = buildClaudeDeploymentAsk();
 const revenueFocus = getRevenueFocus();
 const proofTransformation = getProofTransformation();
 const projectProgress = getProjectProgress();
+const launchTimeline = getLaunchTimeline();
 const goButtonDashboard = getGoButtonDashboard();
 const snapshotDelivery = getSnapshotDeliveryPlan();
 const sprintDeposit = getSprintDepositOffer();
@@ -49,6 +51,11 @@ const progressBar = document.querySelector('#project-progress-fill');
 const progressPercent = document.querySelector('#project-progress-percent');
 const progressMeta = document.querySelector('#project-progress-meta');
 const progressMilestone = document.querySelector('#project-progress-milestone');
+const timelineSummary = document.querySelector('#launch-timeline-summary');
+const timelineEta = document.querySelector('#launch-timeline-eta');
+const timelineDone = document.querySelector('#launch-timeline-done');
+const timelineSpeedups = document.querySelector('#launch-timeline-speedups');
+const timelinePhases = document.querySelector('#launch-timeline-phases');
 const goButtonGrid = document.querySelector('#go-button-grid');
 const goButtonPercent = document.querySelector('#go-button-percent');
 const goButtonStatus = document.querySelector('#go-button-status');
@@ -114,6 +121,58 @@ function renderProjectProgress() {
   progressPercent.textContent = `${projectProgress.percent}%`;
   progressMeta.textContent = `${projectProgress.completed} done, ${projectProgress.inProgress} in motion, ${projectProgress.blocked} connector-blocked, ${projectProgress.queued} next.`;
   progressMilestone.textContent = projectProgress.nextMilestone;
+}
+
+function renderLaunchTimeline() {
+  timelineSummary.textContent = `${launchTimeline.currentPace.summary} ${launchTimeline.fastTrack.summary}`;
+  timelineEta.innerHTML = [launchTimeline.currentPace, launchTimeline.fastTrack]
+    .map(
+      (item) => `
+        <article class="timeline-eta-card">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.etaDate)}</strong>
+          <p>${escapeHtml(item.daysRemaining)} day${item.daysRemaining === 1 ? '' : 's'} remaining</p>
+          ${item.percent ? `<small>${escapeHtml(item.percent)}% complete today</small>` : '<small>Fast-track mode</small>'}
+        </article>
+      `,
+    )
+    .join('');
+
+  timelineDone.innerHTML = launchTimeline.definitionOfDone
+    .map(
+      (item) => `
+        <article class="timeline-mini-card" data-status="${escapeHtml(item.status)}">
+          <span>${escapeHtml(getStatusLabel(item.status))}</span>
+          <strong>${escapeHtml(item.label)}</strong>
+          <p>${escapeHtml(item.need)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  timelineSpeedups.innerHTML = launchTimeline.speedUps
+    .map(
+      (item) => `
+        <article class="timeline-speed-card">
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.effect)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  timelinePhases.innerHTML = launchTimeline.phases
+    .map(
+      (phase, index) => `
+        <article class="timeline-phase-card" data-status="${escapeHtml(phase.status)}">
+          <span>${String(index + 1).padStart(2, '0')} / ${escapeHtml(getStatusLabel(phase.status))}</span>
+          <strong>${escapeHtml(phase.name)}</strong>
+          <p>${escapeHtml(phase.output)}</p>
+          <small>${escapeHtml(phase.window)}</small>
+        </article>
+      `,
+    )
+    .join('');
 }
 
 function renderGoButtonDashboard() {
@@ -522,6 +581,7 @@ modal.addEventListener('click', (event) => {
 renderMetrics();
 renderProof();
 renderProjectProgress();
+renderLaunchTimeline();
 renderGoButtonDashboard();
 renderPaymentOperatingSystem();
 renderSnapshotDelivery();

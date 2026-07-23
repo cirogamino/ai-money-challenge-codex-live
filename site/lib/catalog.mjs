@@ -262,6 +262,111 @@ export function getProjectProgress() {
   };
 }
 
+export function getLaunchTimeline() {
+  const progress = getProjectProgress();
+
+  return {
+    asOf: '2026-07-23',
+    title: 'Estimated timeline to a 100% live product',
+    currentPace: {
+      label: 'Current pace ETA',
+      etaDate: '2026-07-27',
+      daysRemaining: 4,
+      percent: progress.percent,
+      summary:
+        'At the current build-and-connector pace, the full sellable system should be ready in about four calendar days once each connector is handled in sequence.',
+    },
+    fastTrack: {
+      label: 'Fast-track ETA',
+      etaDate: '2026-07-24',
+      daysRemaining: 1,
+      summary:
+        'If payment URLs, subdomain choice, intake destination, ledger access, and webhook target are bundled into one approval block, the same system can compress into roughly one day.',
+    },
+    definitionOfDone: [
+      {
+        label: 'Payment URLs',
+        status: 'blocked',
+        need: 'Four public Stripe and Polar checkout URLs installed into the prepared slots.',
+      },
+      {
+        label: 'Subdomain routing',
+        status: 'blocked',
+        need: 'Final hostname confirmed and pointed at the public sales site.',
+      },
+      {
+        label: 'Buyer intake',
+        status: 'queued',
+        need: 'One intake form that captures Snapshot, Deal Room, and Sprint buyer context.',
+      },
+      {
+        label: 'Instant delivery',
+        status: 'queued',
+        need: 'Snapshot output and Sprint next-step packet triggered after payment.',
+      },
+      {
+        label: 'Ledger reconciliation',
+        status: 'queued',
+        need: 'Cash received, product sold, processor, delivery status, and date logged for the challenge.',
+      },
+    ],
+    phases: [
+      {
+        name: 'Payment activation',
+        window: '0.5 day',
+        status: 'blocked',
+        output: 'Create the four hosted checkout URLs and run the safe installer.',
+      },
+      {
+        name: 'Subdomain cutover',
+        window: '0.5 day',
+        status: 'blocked',
+        output: 'Choose codex.cedogamino.com or chatgtp.cedogamino.com and point it at the live site.',
+      },
+      {
+        name: 'Intake and delivery',
+        window: '1 day',
+        status: 'queued',
+        output: 'Connect the buyer form to Snapshot delivery and Sprint qualification.',
+      },
+      {
+        name: 'Webhook and ledger',
+        window: '1 day',
+        status: 'queued',
+        output: 'Route Stripe and Polar events into the shared cash ledger and delivery status.',
+      },
+      {
+        name: 'Final live smoke test',
+        window: '1 day',
+        status: 'queued',
+        output: 'Test every paid route, success path, intake packet, and reporting view before marketing.',
+      },
+    ],
+    speedUps: [
+      {
+        title: 'Batch the checkout URLs',
+        effect: 'Cuts one to two days by creating all Stripe and Polar links in one dashboard pass instead of one product at a time.',
+      },
+      {
+        title: 'Pick one hostname now',
+        effect: 'Removes the subdomain branch from the work and lets the live URL, success URLs, and checkout copy settle.',
+      },
+      {
+        title: 'Use one intake destination',
+        effect: 'Avoids building separate forms for each product; one smart intake can route Snapshot, Deal Room, and Sprint buyers.',
+      },
+      {
+        title: 'Start with hosted checkout webhooks only',
+        effect: 'Keeps the first automation narrow: paid event in, delivery and ledger packet out, no custom checkout rebuild yet.',
+      },
+      {
+        title: 'Do one paid penny test',
+        effect: 'A single end-to-end test exposes payment, redirect, delivery, and ledger problems faster than isolated checks.',
+      },
+    ],
+  };
+}
+
 export function getGoButtonDashboard() {
   const progress = getProjectProgress();
 

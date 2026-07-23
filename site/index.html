@@ -8,7 +8,7 @@
       name="description"
       content="A local preview sales site for the Codex AI Money Challenge product ladder: Snapshot, Deal Room, and 48-Hour AI Revenue Sprint."
     >
-    <link rel="stylesheet" href="./styles.css?v=20260723b">
+    <link rel="stylesheet" href="./styles.css?v=20260723c">
   </head>
   <body>
     <header class="topbar" aria-label="Primary navigation">
@@ -24,6 +24,8 @@
         <a href="#roi-calculator">ROI</a>
         <a href="#project-progress">Progress</a>
         <a href="#launch-product-preview">Preview</a>
+        <a href="#product-visual-suite">Visuals</a>
+        <a href="#master-launch-checklist">Master</a>
         <a href="#go-button-dashboard">Go</a>
         <a href="#payment-operating-system">Payments</a>
         <a href="#qualifier">Quiz</a>
@@ -123,6 +125,33 @@
             <p id="launch-preview-intro"></p>
           </div>
           <div class="launch-preview-grid" id="launch-preview-grid"></div>
+        </div>
+      </section>
+
+      <section class="section product-visual-section" id="product-visual-suite" aria-labelledby="product-visual-title">
+        <div class="section-inner product-visual-layout">
+          <div class="product-visual-copy">
+            <p class="eyebrow">Sellable product visuals</p>
+            <h2 id="product-visual-title">A premium product ladder image for the launch page and Stripe checkout.</h2>
+            <p id="product-visual-headline"></p>
+            <p id="product-visual-note"></p>
+            <div class="visual-callout-grid" id="product-visual-callouts"></div>
+          </div>
+          <figure class="product-visual-frame">
+            <img id="product-visual-image" src="./assets/codex-product-suite.png" alt="">
+          </figure>
+        </div>
+      </section>
+
+      <section class="section master-checklist-section" id="master-launch-checklist" aria-labelledby="master-checklist-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Master operating checklist</p>
+            <h2 id="master-checklist-title">Timestamped launch progress that Claude can hand to every AI.</h2>
+            <p id="master-checklist-summary"></p>
+            <small id="master-checklist-updated"></small>
+          </div>
+          <div class="master-checklist-grid" id="master-checklist-grid"></div>
         </div>
       </section>
 
@@ -497,6 +526,6 @@
       </div>
     </div>
 
-    <script type="module" src="./app.js?v=20260723b"></script>
+    <script type="module" src="./app.js?v=20260723c"></script>
   </body>
 </html>

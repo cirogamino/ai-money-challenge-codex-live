@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sprint Balance Success | Codex Revenue Lab</title>
+    <meta name="description" content="48-Hour AI Revenue Sprint balance intake and kickoff packet.">
+    <link rel="stylesheet" href="../../styles.css?v=20260723c">
+  </head>
+  <body class="success-page" data-success-route="sprint-balance">
+    <main class="success-shell">
+      <section class="success-hero" aria-labelledby="success-title">
+        <div>
+          <p class="eyebrow" id="success-eyebrow">Payment redirect</p>
+          <h1 id="success-title">Sprint kickoff intake</h1>
+          <p id="success-intro"></p>
+          <div class="success-actions">
+            <a class="button button-secondary" href="../../">Back to sales site</a>
+            <a class="button button-secondary" href="../../../demo/">Open Snapshot demo</a>
+            <a class="button button-primary" id="payment-link" href="#" hidden>Open checkout</a>
+          </div>
+        </div>
+        <aside class="success-status-card" aria-label="Payment status">
+          <span id="route-status"></span>
+          <dl>
+            <div><dt>Processor</dt><dd id="processor-name"></dd></div>
+            <div><dt>Amount</dt><dd id="offer-amount"></dd></div>
+            <div><dt>Reference</dt><dd id="confirmation-reference"></dd></div>
+            <div><dt>Status</dt><dd id="cash-status"></dd></div>
+          </dl>
+        </aside>
+      </section>
+      <section class="success-grid">
+        <form class="success-card intake-card" id="buyer-intake-form">
+          <div class="success-card-heading">
+            <span>Kickoff context</span>
+            <strong id="save-status">Ready</strong>
+          </div>
+          <label>Buyer name <input name="buyerName" value="Jordan Lee" autocomplete="name"></label>
+          <label>Buyer email <input name="buyerEmail" value="jordan@example.com" autocomplete="email"></label>
+          <label>Business name <input name="businessName" value="Harbor Dental Implants"></label>
+          <label>Website <input name="website" value="https://harbordental.example" inputmode="url"></label>
+          <label>Workflow <input name="workflow" value="Implant consult rescue"></label>
+          <label>Bottleneck <textarea name="bottleneck">Consult demand exists, but follow-up quality and speed are inconsistent.</textarea></label>
+          <label>Target buyer <input name="targetBuyer" value="Adults ready to compare implant financing and next steps"></label>
+          <label>Notes <textarea name="notes">Kickoff should produce page, intake, delivery packet, and launch sequence.</textarea></label>
+          <button class="button button-primary" type="submit">Refresh packet</button>
+        </form>
+        <section class="success-card">
+          <div class="success-card-heading">
+            <span>Delivery next step</span>
+            <strong>Build kickoff</strong>
+          </div>
+          <p id="next-step"></p>
+          <h2>Required fields</h2>
+          <ul class="success-list" id="required-fields"></ul>
+          <h2>Automation status</h2>
+          <div class="success-plan-grid" id="automation-plan-grid"></div>
+        </section>
+      </section>
+      <section class="success-output-grid">
+        <article class="success-card">
+          <div class="success-card-heading">
+            <span>Copy-ready delivery brief</span>
+            <button class="button button-secondary" type="button" data-copy-fulfillment-packet>Copy fulfillment packet</button>
+          </div>
+          <textarea id="fulfillment-packet" class="packet-box" readonly></textarea>
+        </article>
+        <article class="success-card">
+          <div class="success-card-heading">
+            <span>Challenge ledger row</span>
+            <button class="button button-secondary" type="button" data-download-ledger-json>Download ledger JSON</button>
+          </div>
+          <pre id="ledger-preview" class="ledger-box"></pre>
+        </article>
+      </section>
+    </main>
+    <script type="module" src="../app.js?v=20260723c"></script>
+  </body>
+</html>

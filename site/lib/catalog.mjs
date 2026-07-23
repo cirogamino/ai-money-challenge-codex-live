@@ -175,7 +175,8 @@ export function getSuperChecklist() {
           label: 'Live checkout URLs',
           owner: 'Claude orchestrator',
           status: 'blocked',
-          detail: 'Needs the real public Stripe and Polar checkout links before preview buttons become payment buttons.',
+          detail:
+            'Stripe live product and price exist, but Stripe Payment Link is blocked until charges_enabled is true. Polar URLs still need a Polar connector or dashboard link export.',
         },
       ],
     },
@@ -197,15 +198,15 @@ export function getSuperChecklist() {
         },
         {
           label: 'Buyer intake form',
-          owner: 'Claude orchestrator',
-          status: 'queued',
-          detail: 'One form should collect buyer context and feed fulfillment after payment.',
+          owner: 'Codex',
+          status: 'done',
+          detail: 'Static success pages now collect buyer context after payment redirects for all four checkout routes.',
         },
         {
           label: 'Challenge ledger sync',
-          owner: 'Claude orchestrator',
-          status: 'queued',
-          detail: 'Cash received, product sold, delivery status, and date should update the shared ledger.',
+          owner: 'Codex and Claude orchestrator',
+          status: 'in_progress',
+          detail: 'Success pages generate local ledger JSON rows; shared ledger/webhook sync still needs the live connector target.',
         },
       ],
     },
@@ -521,6 +522,155 @@ export function getLaunchPreviewDeck() {
       {
         title: 'Keep sample labels honest',
         detail: 'The mockups should feel polished, but labels stay clear so the launch builds trust instead of pretending to have results it does not have yet.',
+      },
+    ],
+  };
+}
+
+export function getProductVisualSuite() {
+  return {
+    imageSrc: './assets/codex-product-suite.png',
+    alt:
+      'Premium product suite showing AI Opportunity Snapshot, AI Deal Room, and the 48-Hour AI Revenue Sprint command console.',
+    headline: 'The product ladder now looks like something worth buying.',
+    highTicketNote:
+      'The $1,500 Sprint is framed as an executive command console with checkout, intake, delivery packet, and revenue ledger modules.',
+    callouts: [
+      {
+        label: 'Tripwire clarity',
+        detail: '$19 Snapshot looks like a tangible diagnostic report, not a vague AI prompt pack.',
+      },
+      {
+        label: 'Recurring value',
+        detail: '$49/mo Deal Room is presented as a weekly deal-flow dashboard with templates and member rhythm.',
+      },
+      {
+        label: 'High-ticket finish line',
+        detail: '$1,500 Sprint has the premium command-center feel the price needs to earn trust.',
+      },
+    ],
+  };
+}
+
+export function getMasterLaunchChecklist() {
+  return {
+    updatedAt: '2026-07-23T01:55:00-05:00',
+    title: 'Codex launch master checklist',
+    summary:
+      'A timestamped, cross-agent checklist for making the Codex offer live, sellable, and duplicatable by every competing AI.',
+    phases: [
+      {
+        name: 'Offer and proof surface',
+        items: [
+          {
+            code: 'codex-product-ladder',
+            label: 'Three-product ladder finished',
+            status: 'done',
+            completedAt: '2026-07-23T00:18:00-05:00',
+            detail: '$19 Snapshot, $49/mo Deal Room, and $1,500 Sprint are visible and internally consistent.',
+          },
+          {
+            code: 'codex-product-visual-suite',
+            label: 'Premium product-suite image created',
+            status: 'done',
+            completedAt: '2026-07-23T20:50:00-05:00',
+            detail: 'Generated visual asset makes the tripwire, membership, and high-ticket Sprint feel tangible.',
+          },
+          {
+            code: 'codex-founder-preview-artifacts',
+            label: 'Founder-preview proof cards finished',
+            status: 'done',
+            completedAt: '2026-07-23T00:42:00-05:00',
+            detail: 'NorthStar, BrightPath, and Harbor sample artifacts replace generic claims.',
+          },
+        ],
+      },
+      {
+        name: 'Checkout architecture',
+        items: [
+          {
+            code: 'cross-ai-payment-standard',
+            label: 'Shared payment architecture guide created',
+            status: 'done',
+            completedAt: '2026-07-23T20:56:00-05:00',
+            detail: 'All AIs should use the same Stripe/Polar metadata, operator code, variant code, success URL, and ledger schema.',
+          },
+          {
+            code: 'codex-stripe-live-product-price',
+            label: 'Stripe live product and price created',
+            status: 'done',
+            completedAt: '2026-07-23T20:54:00-05:00',
+            detail:
+              'Stripe deposit product prod_Uw3y9rTAJ6C0bW / price price_1TwBqNLPpHpxUHTGTATb5NBd and balance product prod_Uw42Rrw93JcovO / price price_1TwBuULPpHpxUHTGfG0lJDl8 exist.',
+          },
+          {
+            code: 'codex-stripe-payment-link',
+            label: 'Stripe Payment Link creation',
+            status: 'blocked',
+            completedAt: '',
+            detail:
+              'Stripe rejected Payment Link creation because charges_enabled=false and card_payments is inactive; account onboarding requirements must be finished in Dashboard.',
+          },
+          {
+            code: 'codex-polar-checkout-links',
+            label: 'Polar Checkout Links',
+            status: 'blocked',
+            completedAt: '',
+            detail: 'No Polar connector or POLAR token is available in this environment; Claude needs to provide URLs or enable a Polar tool.',
+          },
+        ],
+      },
+      {
+        name: 'Post-payment path',
+        items: [
+          {
+            code: 'codex-success-routes',
+            label: 'Four hosted-checkout success pages',
+            status: 'done',
+            completedAt: '2026-07-23T20:45:00-05:00',
+            detail: 'Snapshot, Deal Room, Sprint deposit, and Sprint balance redirects now land on static intake pages.',
+          },
+          {
+            code: 'codex-intake-packet-generator',
+            label: 'Buyer intake and fulfillment packet',
+            status: 'done',
+            completedAt: '2026-07-23T20:45:00-05:00',
+            detail: 'Success pages generate copy-ready delivery briefs from buyer intake.',
+          },
+          {
+            code: 'codex-ledger-json',
+            label: 'Local ledger JSON row',
+            status: 'done',
+            completedAt: '2026-07-23T20:45:00-05:00',
+            detail: 'Each paid route can generate a ledger row while cash status stays pending processor verification.',
+          },
+          {
+            code: 'codex-webhook-ledger-sync',
+            label: 'Verified webhook ledger sync',
+            status: 'blocked',
+            completedAt: '',
+            detail: 'Needs an authorized backend or automation target plus Stripe/Polar webhook signatures before cash can be claimed automatically.',
+          },
+        ],
+      },
+      {
+        name: 'Launch routing',
+        items: [
+          {
+            code: 'codex-github-pages-live',
+            label: 'GitHub Pages live mirror',
+            status: 'done',
+            completedAt: '2026-07-23T00:53:00-05:00',
+            detail: 'Public live mirror exists for real-environment testing.',
+          },
+          {
+            code: 'codex-custom-subdomain',
+            label: 'Custom subdomain routing',
+            status: 'blocked',
+            completedAt: '',
+            detail: 'Claude still needs to confirm codex.cedogamino.com or chatgtp.cedogamino.com and route DNS/hosting.',
+          },
+        ],
       },
     ],
   };

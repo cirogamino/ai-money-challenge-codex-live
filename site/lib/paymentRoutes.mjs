@@ -29,7 +29,7 @@ export const paymentRoutes = [
     configKey: 'POLAR_SNAPSHOT_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_SNAPSHOT_CHECKOUT_URL,
     buttonLabel: 'Add Polar link',
-    successUrl: `${liveBaseUrl}/site/success/snapshot?checkout_id={CHECKOUT_ID}`,
+    successUrl: `${liveBaseUrl}/site/success/snapshot/?checkout_id={CHECKOUT_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://polar.sh/docs/features/checkout/links',
     setupTarget: {
@@ -64,7 +64,7 @@ export const paymentRoutes = [
     configKey: 'POLAR_DEAL_ROOM_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_DEAL_ROOM_CHECKOUT_URL,
     buttonLabel: 'Add Polar link',
-    successUrl: `${liveBaseUrl}/site/success/deal-room?checkout_id={CHECKOUT_ID}`,
+    successUrl: `${liveBaseUrl}/site/success/deal-room/?checkout_id={CHECKOUT_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://polar.sh/docs/features/checkout/links',
     setupTarget: {
@@ -99,7 +99,7 @@ export const paymentRoutes = [
     configKey: 'STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK',
     checkoutUrl: publicCheckoutUrls.STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK,
     buttonLabel: 'Add Stripe link',
-    successUrl: `${liveBaseUrl}/site/success/sprint-deposit?session_id={CHECKOUT_SESSION_ID}`,
+    successUrl: `${liveBaseUrl}/site/success/sprint-deposit/?session_id={CHECKOUT_SESSION_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://docs.stripe.com/payment-links/create',
     setupTarget: {
@@ -134,7 +134,7 @@ export const paymentRoutes = [
     configKey: 'STRIPE_SPRINT_BALANCE_PAYMENT_LINK',
     checkoutUrl: publicCheckoutUrls.STRIPE_SPRINT_BALANCE_PAYMENT_LINK,
     buttonLabel: 'Add Stripe link',
-    successUrl: `${liveBaseUrl}/site/success/sprint-balance?session_id={CHECKOUT_SESSION_ID}`,
+    successUrl: `${liveBaseUrl}/site/success/sprint-balance/?session_id={CHECKOUT_SESSION_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://docs.stripe.com/invoicing/hosted-invoice-page',
     setupTarget: {

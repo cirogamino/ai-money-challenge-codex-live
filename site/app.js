@@ -9,7 +9,9 @@ import {
   getLaunchPreviewDeck,
   getLaunchReadiness,
   getLaunchTimeline,
+  getMasterLaunchChecklist,
   getProjectProgress,
+  getProductVisualSuite,
   getProofTransformation,
   getQualificationResult,
   getRevenueFocus,
@@ -18,7 +20,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260723b';
+} from './lib/catalog.mjs?v=20260723c';
 import {
   getPaymentProfitUpgrades,
   getPaymentReadiness,
@@ -26,7 +28,7 @@ import {
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260723b';
+} from './lib/paymentRoutes.mjs?v=20260723c';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -35,6 +37,8 @@ const revenueFocus = getRevenueFocus();
 const proofTransformation = getProofTransformation();
 const projectProgress = getProjectProgress();
 const launchPreviewDeck = getLaunchPreviewDeck();
+const productVisualSuite = getProductVisualSuite();
+const masterLaunchChecklist = getMasterLaunchChecklist();
 const launchTimeline = getLaunchTimeline();
 const goButtonDashboard = getGoButtonDashboard();
 const snapshotDelivery = getSnapshotDeliveryPlan();
@@ -60,8 +64,15 @@ const timelineSpeedups = document.querySelector('#launch-timeline-speedups');
 const timelinePhases = document.querySelector('#launch-timeline-phases');
 const launchPreviewIntro = document.querySelector('#launch-preview-intro');
 const launchPreviewGrid = document.querySelector('#launch-preview-grid');
+const productVisualImage = document.querySelector('#product-visual-image');
+const productVisualHeadline = document.querySelector('#product-visual-headline');
+const productVisualNote = document.querySelector('#product-visual-note');
+const productVisualCallouts = document.querySelector('#product-visual-callouts');
 const fulfillmentPreviewGrid = document.querySelector('#fulfillment-preview-grid');
 const proofStackGrid = document.querySelector('#proof-stack-grid');
+const masterChecklistSummary = document.querySelector('#master-checklist-summary');
+const masterChecklistUpdated = document.querySelector('#master-checklist-updated');
+const masterChecklistGrid = document.querySelector('#master-checklist-grid');
 const goButtonGrid = document.querySelector('#go-button-grid');
 const goButtonPercent = document.querySelector('#go-button-percent');
 const goButtonStatus = document.querySelector('#go-button-status');
@@ -232,6 +243,59 @@ function renderLaunchPreviewDeck() {
           <span>${escapeHtml(card.label)}</span>
           <strong>${escapeHtml(card.title)}</strong>
           <p>${escapeHtml(card.detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderProductVisualSuite() {
+  productVisualImage.src = productVisualSuite.imageSrc;
+  productVisualImage.alt = productVisualSuite.alt;
+  productVisualHeadline.textContent = productVisualSuite.headline;
+  productVisualNote.textContent = productVisualSuite.highTicketNote;
+  productVisualCallouts.innerHTML = productVisualSuite.callouts
+    .map(
+      (callout) => `
+        <article class="visual-callout">
+          <span>${escapeHtml(callout.label)}</span>
+          <p>${escapeHtml(callout.detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderMasterLaunchChecklist() {
+  masterChecklistSummary.textContent = masterLaunchChecklist.summary;
+  masterChecklistUpdated.textContent = `Updated ${masterLaunchChecklist.updatedAt}`;
+  masterChecklistGrid.innerHTML = masterLaunchChecklist.phases
+    .map(
+      (phase) => `
+        <article class="master-checklist-phase">
+          <div class="master-checklist-phase-top">
+            <h3>${escapeHtml(phase.name)}</h3>
+            <span>${escapeHtml(String(phase.items.filter((item) => item.status === 'done').length))} / ${escapeHtml(String(phase.items.length))}</span>
+          </div>
+          <div class="master-checklist-items">
+            ${phase.items
+              .map(
+                (item) => `
+                  <div class="master-checklist-item" data-status="${escapeHtml(item.status)}">
+                    <input type="checkbox" aria-label="${escapeHtml(item.label)}" ${item.status === 'done' ? 'checked' : ''} disabled>
+                    <div>
+                      <div class="master-checklist-item-top">
+                        <strong>${escapeHtml(item.label)}</strong>
+                        <span>${escapeHtml(getStatusLabel(item.status))}</span>
+                      </div>
+                      <p>${escapeHtml(item.detail)}</p>
+                      <small>${escapeHtml(item.code)}${item.completedAt ? ` - ${escapeHtml(item.completedAt)}` : ''}</small>
+                    </div>
+                  </div>
+                `,
+              )
+              .join('')}
+          </div>
         </article>
       `,
     )
@@ -646,6 +710,8 @@ renderProof();
 renderProjectProgress();
 renderLaunchTimeline();
 renderLaunchPreviewDeck();
+renderProductVisualSuite();
+renderMasterLaunchChecklist();
 renderGoButtonDashboard();
 renderPaymentOperatingSystem();
 renderSnapshotDelivery();

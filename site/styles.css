@@ -1376,6 +1376,292 @@ h3 {
   font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
+.product-visual-section {
+  background: #080c11;
+}
+
+.product-visual-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.product-visual-copy {
+  display: grid;
+  gap: 1rem;
+}
+
+.product-visual-copy p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.product-visual-frame {
+  margin: 0;
+  border: 1px solid rgba(231, 185, 95, 0.34);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #070a0e;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.product-visual-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.visual-callout-grid,
+.master-checklist-grid,
+.master-checklist-items,
+.success-plan-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.visual-callout,
+.master-checklist-phase,
+.success-card,
+.success-status-card,
+.success-plan-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(13, 20, 28, 0.84);
+}
+
+.visual-callout {
+  padding: 1rem;
+}
+
+.visual-callout span,
+.success-card-heading span,
+.master-checklist-phase-top span,
+.success-plan-card span {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.visual-callout p,
+.master-checklist-item p,
+.success-card p,
+.success-list,
+.success-plan-card p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.master-checklist-section {
+  background: #0e151d;
+}
+
+.master-checklist-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.master-checklist-phase {
+  padding: 1rem;
+}
+
+.master-checklist-phase-top,
+.master-checklist-item-top,
+.success-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.master-checklist-phase-top h3,
+.success-card h2 {
+  margin: 0;
+}
+
+.master-checklist-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.master-checklist-item input {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.2rem;
+  accent-color: var(--green);
+}
+
+.master-checklist-item[data-status="done"] strong {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(72, 187, 120, 0.8);
+}
+
+.master-checklist-item[data-status="blocked"] {
+  border-color: rgba(245, 101, 101, 0.38);
+}
+
+.master-checklist-item[data-status="in_progress"] {
+  border-color: rgba(231, 185, 95, 0.42);
+}
+
+.master-checklist-item-top span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.24rem 0.55rem;
+  color: var(--text);
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.master-checklist-item small {
+  color: #91a3b5;
+  overflow-wrap: anywhere;
+}
+
+.success-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(39, 164, 181, 0.14), transparent 32rem),
+    linear-gradient(135deg, #070b10 0%, #111822 46%, #090c10 100%);
+}
+
+.success-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.success-hero,
+.success-grid,
+.success-output-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.success-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.45fr);
+  align-items: stretch;
+  padding: 3rem 0 1.2rem;
+}
+
+.success-hero h1 {
+  max-width: 780px;
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(2.2rem, 7vw, 5rem);
+}
+
+.success-hero p {
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+}
+
+.success-status-card,
+.success-card {
+  padding: 1rem;
+}
+
+.success-status-card {
+  display: grid;
+  align-content: space-between;
+  gap: 1rem;
+}
+
+.success-status-card dl {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+}
+
+.success-status-card div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.success-status-card dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.success-status-card dd {
+  margin: 0;
+  color: var(--text);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.success-grid,
+.success-output-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.intake-card {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.intake-card label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text);
+  font-weight: 750;
+}
+
+.intake-card input,
+.intake-card textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #070d13;
+  color: var(--text);
+  padding: 0.75rem;
+  font: inherit;
+}
+
+.intake-card textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+.success-list {
+  padding-left: 1.1rem;
+}
+
+.success-plan-card {
+  padding: 0.8rem;
+}
+
+.packet-box,
+.ledger-box {
+  width: 100%;
+  min-height: 390px;
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #060a0f;
+  color: #dfe8f3;
+  padding: 1rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  font: 0.86rem ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
 @media (max-width: 920px) {
   h1 {
     font-size: 3rem;
@@ -1407,6 +1693,8 @@ h3 {
   .go-header,
   .payment-header,
   .payment-rules,
+  .product-visual-layout,
+  .master-checklist-grid,
   .intro-grid,
   .proof-layout,
   .roi-layout,
@@ -1418,6 +1706,12 @@ h3 {
   .trust-layout,
   .launch-layout,
   .final-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .success-hero,
+  .success-grid,
+  .success-output-grid {
     grid-template-columns: 1fr;
   }
 }

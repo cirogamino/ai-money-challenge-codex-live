@@ -26,10 +26,10 @@ function buildConnectors({ productName, priceUsd }) {
     {
       id: 'payment',
       name: 'Payment link',
-      recommended: 'PayPal Payment Link first',
+      recommended: 'Polar Checkout Link for $19, Stripe Payment Link for Sprint deposits',
       status: 'needs-authorization',
       purpose: `Collect the first $${priceUsd} before delivery without building a custom checkout.`,
-      authorizationNeeded: 'Ciro approves or connects the payment account through Claude.',
+      authorizationNeeded: 'Claude gets the public Stripe and Polar checkout URLs after account authorization.',
     },
     {
       id: 'intake',

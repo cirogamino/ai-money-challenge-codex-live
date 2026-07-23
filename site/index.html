@@ -8,7 +8,7 @@
       name="description"
       content="A local preview sales site for the Codex AI Money Challenge product ladder: Snapshot, Deal Room, and 48-Hour AI Revenue Sprint."
     >
-    <link rel="stylesheet" href="./styles.css?v=20260722b">
+    <link rel="stylesheet" href="./styles.css?v=20260722d">
   </head>
   <body>
     <header class="topbar" aria-label="Primary navigation">
@@ -24,6 +24,7 @@
         <a href="#roi-calculator">ROI</a>
         <a href="#project-progress">Progress</a>
         <a href="#go-button-dashboard">Go</a>
+        <a href="#payment-operating-system">Payments</a>
         <a href="#qualifier">Quiz</a>
         <a href="#super-checklist">Checklist</a>
         <a href="#product-ladder">Buy</a>
@@ -109,6 +110,40 @@
             </div>
           </div>
           <div class="go-grid" id="go-button-grid"></div>
+        </div>
+      </section>
+
+      <section class="section payment-section" id="payment-operating-system" aria-labelledby="payment-title">
+        <div class="section-inner">
+          <div class="payment-header">
+            <div>
+              <p class="eyebrow">Stripe / Polar operating system</p>
+              <h2 id="payment-title">One processor per product until the first cash is clean.</h2>
+              <p>
+                Polar carries the digital product and membership. Stripe carries the Sprint
+                deposit and balance. Public checkout URLs can be wired here; private API
+                keys and webhook secrets stay out of the static site.
+              </p>
+            </div>
+            <div class="payment-summary" id="payment-readiness-summary"></div>
+          </div>
+          <div class="processor-grid" id="processor-assignment-grid"></div>
+          <div class="payment-route-grid" id="payment-route-grid"></div>
+          <ul class="payment-rules" id="payment-rules"></ul>
+        </div>
+      </section>
+
+      <section class="section profit-system-section" id="profit-upgrade-system" aria-labelledby="profit-system-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">10 Stripe / Polar profit upgrades</p>
+            <h2 id="profit-system-title">Make every payment click easier to buy, fulfill, and count.</h2>
+            <p>
+              These are the next system improvements that directly raise 30-day cash odds:
+              cleaner routing, stronger upsells, faster fulfillment, and cleaner ledger proof.
+            </p>
+          </div>
+          <div class="growth-grid" id="profit-upgrade-grid"></div>
         </div>
       </section>
 
@@ -395,6 +430,6 @@
       </div>
     </div>
 
-    <script type="module" src="./app.js?v=20260722c"></script>
+    <script type="module" src="./app.js?v=20260722d"></script>
   </body>
 </html>

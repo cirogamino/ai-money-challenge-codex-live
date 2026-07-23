@@ -16,7 +16,15 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260722c';
+} from './lib/catalog.mjs?v=20260722d';
+import {
+  getPaymentProfitUpgrades,
+  getPaymentReadiness,
+  getPaymentRouteBySlug,
+  getPaymentStrategy,
+  getPrimaryPaymentRouteForProduct,
+  getProcessorAssignments,
+} from './lib/paymentRoutes.mjs?v=20260722d';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -28,6 +36,10 @@ const goButtonDashboard = getGoButtonDashboard();
 const snapshotDelivery = getSnapshotDeliveryPlan();
 const sprintDeposit = getSprintDepositOffer();
 const superChecklist = getSuperChecklist();
+const paymentStrategy = getPaymentStrategy();
+const processorAssignments = getProcessorAssignments();
+const paymentReadiness = getPaymentReadiness();
+const paymentProfitUpgrades = getPaymentProfitUpgrades();
 
 const metricStrip = document.querySelector('#metric-strip');
 const productGrid = document.querySelector('#product-grid');
@@ -40,6 +52,11 @@ const progressMilestone = document.querySelector('#project-progress-milestone');
 const goButtonGrid = document.querySelector('#go-button-grid');
 const goButtonPercent = document.querySelector('#go-button-percent');
 const goButtonStatus = document.querySelector('#go-button-status');
+const paymentReadinessSummary = document.querySelector('#payment-readiness-summary');
+const processorAssignmentGrid = document.querySelector('#processor-assignment-grid');
+const paymentRouteGrid = document.querySelector('#payment-route-grid');
+const paymentRules = document.querySelector('#payment-rules');
+const profitUpgradeGrid = document.querySelector('#profit-upgrade-grid');
 const snapshotOutputs = document.querySelector('#snapshot-outputs');
 const snapshotSteps = document.querySelector('#snapshot-steps');
 const snapshotPromise = document.querySelector('#snapshot-promise');
@@ -61,7 +78,11 @@ const flowSteps = document.querySelector('#flow-steps');
 const handoffBox = document.querySelector('#handoff-box');
 
 function escapeHtml(value) {
-  return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
 }
 
 function renderMetrics() {
@@ -106,6 +127,68 @@ function renderGoButtonDashboard() {
           </div>
           <p>${escapeHtml(connector.action)}</p>
           <small>${escapeHtml(connector.owner)}</small>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderPaymentOperatingSystem() {
+  paymentReadinessSummary.innerHTML = `
+    <span>${escapeHtml(paymentReadiness.mode === 'live' ? 'Live checkout' : 'Connector preview')}</span>
+    <strong>${escapeHtml(paymentReadiness.liveCount)} / ${escapeHtml(paymentReadiness.totalCount)} URLs live</strong>
+    <p>${escapeHtml(paymentReadiness.summary)}</p>
+  `;
+
+  paymentRules.innerHTML = paymentStrategy.rules.map((rule) => `<li>${escapeHtml(rule)}</li>`).join('');
+
+  processorAssignmentGrid.innerHTML = processorAssignments
+    .map(
+      (assignment) => `
+        <article class="processor-card">
+          <span>${escapeHtml(assignment.processor)}</span>
+          <h3>${escapeHtml(assignment.bestFor)}</h3>
+          <p>${escapeHtml(assignment.setup)}</p>
+          <ul>
+            ${assignment.offers
+              .map((offer) => `<li>${escapeHtml(offer.offer)} - ${escapeHtml(offer.amount)}</li>`)
+              .join('')}
+          </ul>
+        </article>
+      `,
+    )
+    .join('');
+
+  paymentRouteGrid.innerHTML = paymentReadiness.routes
+    .map(
+      (route) => `
+        <article class="payment-route-card" data-live="${escapeHtml(String(route.isLive))}">
+          <div class="payment-route-top">
+            <span>${escapeHtml(route.processorLabel)} ${escapeHtml(route.checkoutType)}</span>
+            <strong>${escapeHtml(route.amount)}</strong>
+          </div>
+          <h3>${escapeHtml(route.offer)}</h3>
+          <p>${escapeHtml(route.reason)}</p>
+          <dl>
+            <div>
+              <dt>Slot</dt>
+              <dd>${escapeHtml(route.configKey)}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>${escapeHtml(route.displayStatus)}</dd>
+            </div>
+            <div>
+              <dt>Metadata</dt>
+              <dd>${escapeHtml(route.metadata.offer_slug)} / ${escapeHtml(route.metadata.processor)}</dd>
+            </div>
+          </dl>
+          ${
+            route.isLive
+              ? `<a class="button button-primary" href="${escapeHtml(route.checkoutUrl)}">Open checkout</a>`
+              : `<button class="button button-secondary" type="button" data-open-flow="${escapeHtml(route.productSlug)}">${escapeHtml(route.buttonLabel)}</button>`
+          }
+          <small>${escapeHtml(route.nextAction)}</small>
         </article>
       `,
     )
@@ -199,12 +282,29 @@ function renderCheckoutActions() {
           <span>${escapeHtml(action.connector)}</span>
           <h3>${escapeHtml(action.label)}</h3>
           <p>${escapeHtml(product.primaryOutcome)}</p>
-          <button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">
-            ${escapeHtml(checkoutState.liveLabel)}
-          </button>
+          <small>${escapeHtml(action.configKey)}</small>
+          ${
+            action.isLive
+              ? `<a class="button button-primary" href="${escapeHtml(action.checkoutUrl)}">${escapeHtml(action.buttonLabel)}</a>`
+              : `<button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">${escapeHtml(checkoutState.liveLabel)}</button>`
+          }
         </article>
       `;
     })
+    .join('');
+}
+
+function renderPaymentProfitUpgrades() {
+  profitUpgradeGrid.innerHTML = paymentProfitUpgrades
+    .map(
+      (upgrade, index) => `
+        <article class="growth-card">
+          <span>${String(index + 1).padStart(2, '0')}</span>
+          <h3>${escapeHtml(upgrade.title)}</h3>
+          <p>${escapeHtml(upgrade.why)}</p>
+        </article>
+      `,
+    )
     .join('');
 }
 
@@ -297,16 +397,20 @@ function getProductBySlug(slug) {
 
 function openFlow(slug) {
   const product = getProductBySlug(slug);
+  const route = getPrimaryPaymentRouteForProduct(product.slug) ?? getPaymentRouteBySlug(slug);
   const isSprint = product.slug === sprintDeposit.productSlug;
   const firstStep = isSprint
     ? `Buyer clicks ${sprintDeposit.cta} and pays ${sprintDeposit.price} toward the ${sprintDeposit.appliesTo}.`
     : `Buyer clicks ${product.cta} for ${product.title} at ${product.price}.`;
+  const paymentStep = route
+    ? `${route.processorLabel} ${route.checkoutType} collects cash once ${route.configKey} contains the public checkout URL.`
+    : `${product.checkoutAction} collects cash or deposit once the connector is authorized.`;
 
-  flowTitle.textContent = `${product.title} - ${checkoutState.liveLabel}`;
+  flowTitle.textContent = `${product.title} - ${route?.displayStatus ?? checkoutState.liveLabel}`;
   flowCopy.textContent = `${product.primaryOutcome} ${checkoutState.buyerMessage}`;
   flowSteps.innerHTML = [
     firstStep,
-    `${product.checkoutAction} collects cash or deposit once the connector is authorized.`,
+    paymentStep,
     'Intake captures buyer context and triggers fulfillment.',
     'Claude receives the status packet so Ciro only approves the go-live step.',
   ]
@@ -371,12 +475,14 @@ renderMetrics();
 renderProof();
 renderProjectProgress();
 renderGoButtonDashboard();
+renderPaymentOperatingSystem();
 renderSnapshotDelivery();
 renderSuperChecklist();
 renderNiches();
 renderCheckoutActions();
 renderProducts();
 renderUpgradeList();
+renderPaymentProfitUpgrades();
 renderGrowthIdeas();
 renderReadiness();
 updateRoi();

@@ -397,10 +397,17 @@ h3 {
 
 .niche-grid,
 .checkout-grid,
+.processor-grid,
+.payment-route-grid,
 .go-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.payment-route-grid {
+  margin-top: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .go-grid {
@@ -489,6 +496,8 @@ h3 {
 .niche-card,
 .checkout-card,
 .go-card,
+.processor-card,
+.payment-route-card,
 .upgrade-card,
 .growth-card,
 .readiness-item,
@@ -505,6 +514,7 @@ h3 {
 .proof-section,
 .roi-section,
 .go-section,
+.profit-system-section,
 .checkout-section,
 .snapshot-delivery-section,
 .trust-section,
@@ -513,6 +523,7 @@ h3 {
 }
 
 .niche-section,
+.payment-section,
 .quiz-section,
 .checklist-section,
 .upgrade-section {
@@ -552,6 +563,146 @@ h3 {
 
 .go-command strong {
   font-size: 2rem;
+}
+
+.payment-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: 1.25rem;
+}
+
+.payment-header p {
+  max-width: 780px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.payment-summary {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(56, 215, 255, 0.34);
+  border-radius: 8px;
+  background: rgba(56, 215, 255, 0.08);
+}
+
+.payment-summary span,
+.processor-card span,
+.payment-route-top span,
+.payment-route-card small {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.payment-summary strong {
+  color: var(--text);
+  font-size: 1.55rem;
+}
+
+.payment-summary p,
+.processor-card p,
+.payment-route-card p,
+.payment-route-card small {
+  margin: 0;
+  color: #d7e0ea;
+  line-height: 1.55;
+}
+
+.processor-card {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  background: var(--panel);
+}
+
+.processor-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.processor-card ul,
+.payment-rules {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1rem;
+  color: #d7e0ea;
+  line-height: 1.45;
+}
+
+.payment-route-card {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+}
+
+.payment-route-card[data-live="false"] {
+  border-color: rgba(245, 194, 75, 0.48);
+}
+
+.payment-route-card[data-live="true"] {
+  border-color: rgba(96, 211, 148, 0.5);
+}
+
+.payment-route-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.payment-route-top strong {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.payment-route-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.payment-route-card dl {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.payment-route-card dl div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.payment-route-card dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.payment-route-card dd {
+  margin: 0;
+  color: #d7e0ea;
+  overflow-wrap: anywhere;
+}
+
+.payment-rules {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.payment-rules li {
+  padding: 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .go-card {
@@ -958,11 +1109,15 @@ h3 {
   .product-grid,
   .niche-grid,
   .checkout-grid,
+  .processor-grid,
+  .payment-route-grid,
   .go-grid,
   .upgrade-grid,
   .growth-grid,
   .progress-layout,
   .go-header,
+  .payment-header,
+  .payment-rules,
   .intro-grid,
   .proof-layout,
   .roi-layout,

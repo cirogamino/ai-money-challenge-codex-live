@@ -1,3 +1,9 @@
+import {
+  buildPaymentConnectorAsk,
+  getPaymentReadiness,
+  getPaymentRouteBySlug,
+} from './paymentRoutes.mjs';
+
 export const products = [
   {
     slug: 'ai-opportunity-snapshot',
@@ -17,7 +23,7 @@ export const products = [
       'Launch copy starter pack',
     ],
     cta: 'Buy Snapshot after approval',
-    checkoutAction: 'Stripe or Gumroad payment link',
+    checkoutAction: 'Polar Checkout Link - POLAR_SNAPSHOT_CHECKOUT_URL',
   },
   {
     slug: 'ai-deal-room',
@@ -36,7 +42,7 @@ export const products = [
       'Member-only launch console',
     ],
     cta: 'Join founding list',
-    checkoutAction: 'Recurring checkout link',
+    checkoutAction: 'Polar recurring Checkout Link - POLAR_DEAL_ROOM_CHECKOUT_URL',
   },
   {
     slug: 'ai-revenue-sprint',
@@ -56,7 +62,7 @@ export const products = [
       'Launch script packet',
     ],
     cta: 'Reserve $99 Sprint deposit',
-    checkoutAction: 'Cal.com paid booking, Stripe deposit link, or Polar checkout',
+    checkoutAction: 'Stripe Payment Link - STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK',
   },
 ];
 
@@ -76,7 +82,7 @@ export function getSprintDepositOffer() {
     cta: 'Reserve $99 Sprint deposit',
     buyerPromise:
       'Reserve one of the 3 Sprint slots, credit the deposit toward the $1,500 build, and trigger qualification before full delivery.',
-    connector: 'Stripe Payment Link, Polar checkout, or Cal.com paid booking',
+    connector: 'Stripe Payment Link or hosted invoice',
   };
 }
 
@@ -153,16 +159,22 @@ export function getSuperChecklist() {
           detail: 'The $19 buyer output, thank-you upsell, and ledger packet are specified.',
         },
         {
-          label: 'Payment link connector packet',
-          owner: 'Claude orchestrator',
-          status: 'in_progress',
-          detail: 'Ready to wire once the live Stripe, Polar, PayPal, or chosen payment URL is available.',
+          label: 'Stripe and Polar processor split',
+          owner: 'Codex',
+          status: 'done',
+          detail: 'Polar owns Snapshot and Deal Room. Stripe owns the Sprint deposit and balance.',
         },
         {
-          label: 'Paid booking connector',
+          label: 'Payment link connector packet',
+          owner: 'Codex',
+          status: 'done',
+          detail: 'Exact public checkout URL slots are defined for Stripe and Polar.',
+        },
+        {
+          label: 'Live checkout URLs',
           owner: 'Claude orchestrator',
           status: 'blocked',
-          detail: 'Needs final account authorization before a live paid booking or deposit link can replace preview mode.',
+          detail: 'Needs the real public Stripe and Polar checkout links before preview buttons become payment buttons.',
         },
       ],
     },
@@ -246,7 +258,7 @@ export function getProjectProgress() {
     queued,
     total: items.length,
     currentPhase: 'First-dollar connector wiring',
-    nextMilestone: 'Replace connector previews with live payment, booking, intake, ledger, and subdomain routing.',
+    nextMilestone: 'Replace connector previews with live Stripe, Polar, intake, ledger, and subdomain routing.',
   };
 }
 
@@ -269,7 +281,7 @@ export function getGoButtonDashboard() {
         name: 'Payment link',
         state: 'in_progress',
         owner: 'Claude orchestrator',
-        action: 'Wire Stripe, Polar, PayPal, or the chosen payment link after authorization.',
+        action: 'Drop the four public Stripe and Polar checkout URLs into the prepared slots.',
       },
       {
         name: '$99 Sprint deposit',
@@ -307,30 +319,49 @@ export function getGoButtonDashboard() {
 
 export function getCheckoutState() {
   const sprintDeposit = getSprintDepositOffer();
+  const paymentReadiness = getPaymentReadiness();
+  const snapshotRoute = getPaymentRouteBySlug('ai-opportunity-snapshot');
+  const dealRoomRoute = getPaymentRouteBySlug('ai-deal-room');
+  const sprintDepositRoute = getPaymentRouteBySlug('ai-revenue-sprint-deposit');
 
   return {
-    mode: 'preview',
-    isPaymentLive: false,
+    mode: paymentReadiness.mode === 'live' ? 'live' : 'preview',
+    isPaymentLive: paymentReadiness.mode === 'live',
     primaryButtonLabel: sprintDeposit.cta,
-    liveLabel: 'Connector preview',
-    pendingConnectors: ['payment link', 'paid booking', 'intake form', 'ledger sync', 'subdomain routing'],
+    liveLabel: paymentReadiness.mode === 'live' ? 'Live checkout' : 'Connector preview',
+    pendingConnectors: ['Stripe URL', 'Polar URL', 'intake form', 'ledger sync', 'subdomain routing'],
     buyerMessage:
-      'Payments are not live in this local preview. The final version should connect a Stripe, Polar, PayPal, or paid booking link, one intake form, and one ledger update before launch.',
+      'Payments are not live in this preview until the public Stripe and Polar checkout URLs are visible. API keys and webhook secrets stay out of the static site.',
     actions: [
       {
         label: 'Buy $19 Snapshot',
-        productSlug: 'ai-opportunity-snapshot',
-        connector: 'Stripe or Polar',
+        productSlug: snapshotRoute.productSlug,
+        routeSlug: snapshotRoute.slug,
+        connector: `${snapshotRoute.processorLabel} - ${snapshotRoute.displayStatus}`,
+        configKey: snapshotRoute.configKey,
+        checkoutUrl: snapshotRoute.checkoutUrl,
+        isLive: snapshotRoute.isLive,
+        buttonLabel: snapshotRoute.isLive ? 'Buy Snapshot' : snapshotRoute.buttonLabel,
       },
       {
         label: 'Join $49/mo Deal Room',
-        productSlug: 'ai-deal-room',
-        connector: 'Stripe subscription or Polar product',
+        productSlug: dealRoomRoute.productSlug,
+        routeSlug: dealRoomRoute.slug,
+        connector: `${dealRoomRoute.processorLabel} - ${dealRoomRoute.displayStatus}`,
+        configKey: dealRoomRoute.configKey,
+        checkoutUrl: dealRoomRoute.checkoutUrl,
+        isLive: dealRoomRoute.isLive,
+        buttonLabel: dealRoomRoute.isLive ? 'Join Deal Room' : dealRoomRoute.buttonLabel,
       },
       {
         label: sprintDeposit.cta,
-        productSlug: sprintDeposit.productSlug,
-        connector: sprintDeposit.connector,
+        productSlug: sprintDepositRoute.productSlug,
+        routeSlug: sprintDepositRoute.slug,
+        connector: `${sprintDepositRoute.processorLabel} - ${sprintDepositRoute.displayStatus}`,
+        configKey: sprintDepositRoute.configKey,
+        checkoutUrl: sprintDepositRoute.checkoutUrl,
+        isLive: sprintDepositRoute.isLive,
+        buttonLabel: sprintDepositRoute.isLive ? sprintDeposit.cta : sprintDepositRoute.buttonLabel,
       },
     ],
   };
@@ -511,12 +542,12 @@ export function getLaunchReadiness() {
       {
         name: 'Payment link',
         owner: 'Codex build packet',
-        status: 'Prepare Stripe, Polar, or PayPal link target after Ciro authorizes account use.',
+        status: 'Use Polar Checkout Links for Snapshot and Deal Room; use Stripe Payment Links or invoices for Sprint payments.',
       },
       {
-        name: 'Paid booking',
+        name: 'Sprint deposit',
         owner: 'Codex build packet',
-        status: 'Connect a Cal.com paid booking, Stripe link, Polar checkout, or PayPal link for the $99 Sprint deposit.',
+        status: 'Connect STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK for the $99 deposit and keep the full balance on Stripe.',
       },
       {
         name: 'Intake form',
@@ -536,7 +567,9 @@ export function buildClaudeDeploymentAsk() {
   return [
     'Claude/orchestrator handoff request:',
     'Confirm whether the Codex/ChatGPT sales site should live at codex.cedogamino.com or chatgtp.cedogamino.com.',
-    'After Ciro authorizes the final connector stack, wire the chosen subdomain, $19 Snapshot payment link, Polar or Stripe checkout, $99 Sprint deposit, paid booking or deposit path, intake form, instant Snapshot delivery, and ledger update.',
+    'After Ciro authorizes the final connector stack, wire the chosen subdomain, Polar Snapshot checkout, Polar Deal Room checkout, Stripe $99 Sprint deposit, Stripe Sprint balance path, intake form, instant Snapshot delivery, and ledger update.',
     'Goal: Ciro should only need to authorize and press go, not manually post, DM, or stitch systems together.',
+    '',
+    buildPaymentConnectorAsk(),
   ].join('\n');
 }

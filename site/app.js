@@ -20,7 +20,7 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260723c';
+} from './lib/catalog.mjs?v=20260723d';
 import {
   getPaymentProfitUpgrades,
   getPaymentReadiness,
@@ -28,7 +28,7 @@ import {
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260723c';
+} from './lib/paymentRoutes.mjs?v=20260723d';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
@@ -323,7 +323,7 @@ function renderGoButtonDashboard() {
 
 function renderPaymentOperatingSystem() {
   paymentReadinessSummary.innerHTML = `
-    <span>${escapeHtml(paymentReadiness.mode === 'live' ? 'Live checkout' : 'Connector preview')}</span>
+    <span>${escapeHtml(paymentReadiness.statusLabel)}</span>
     <strong>${escapeHtml(paymentReadiness.liveCount)} / ${escapeHtml(paymentReadiness.totalCount)} URLs live</strong>
     <p>${escapeHtml(paymentReadiness.summary)}</p>
   `;

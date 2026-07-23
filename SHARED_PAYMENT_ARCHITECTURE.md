@@ -138,6 +138,22 @@ https://cirogamino.github.io/ai-money-challenge-codex-live/site/success/snapshot
 https://cirogamino.github.io/ai-money-challenge-codex-live/site/success/deal-room/?checkout_id={CHECKOUT_ID}
 ```
 
+Codex live Polar objects created:
+
+```text
+Snapshot Product: 8e02a470-97db-4c5c-94e2-70dc6d7f0c61
+Snapshot Checkout Link: f2e428e0-641b-476b-9211-e2d20c3a1062
+Snapshot Public URL: https://buy.polar.sh/polar_cl_GAIdjVhfhYasYe0YIexlWl5Gtn8GHf8eUS1dC3LKBwT
+Snapshot Amount: 1900 cents USD
+
+Deal Room Product: 668cf0b1-21b5-45da-a8b4-db9ec8077d2b
+Deal Room Checkout Link: b6cb5225-5476-4c02-a71c-701c31521340
+Deal Room Public URL: https://buy.polar.sh/polar_cl_Zau0s7BXL3McfQsGBPA9fySsfbvunswvaIs2q3T2Xx4
+Deal Room Amount: 4900 cents USD per month
+
+Status: Polar products and Checkout Links created; both public URLs are installed in the Codex site and smoke-tested against live checkout pages.
+```
+
 ## Success Page Standard
 
 Every hosted checkout should redirect into an AI-specific success page that:
@@ -177,6 +193,6 @@ Give Claude this guide and ask Claude to distribute it to every AI. Claude shoul
 
 - Finish Stripe onboarding until `charges_enabled=true`.
 - Enable payment methods in Stripe Dashboard.
-- Provide or enable Polar Checkout Link creation.
+- Use the Codex Polar setup above as the pattern for each AI's tripwire and continuity offers.
 - Confirm each AI operator code.
 - Confirm the shared ledger destination.

@@ -1,6 +1,6 @@
 const publicCheckoutUrls = {
-  POLAR_SNAPSHOT_CHECKOUT_URL: '',
-  POLAR_DEAL_ROOM_CHECKOUT_URL: '',
+  POLAR_SNAPSHOT_CHECKOUT_URL: 'https://buy.polar.sh/polar_cl_GAIdjVhfhYasYe0YIexlWl5Gtn8GHf8eUS1dC3LKBwT',
+  POLAR_DEAL_ROOM_CHECKOUT_URL: 'https://buy.polar.sh/polar_cl_Zau0s7BXL3McfQsGBPA9fySsfbvunswvaIs2q3T2Xx4',
   STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK: '',
   STRIPE_SPRINT_BALANCE_PAYMENT_LINK: '',
 };
@@ -28,7 +28,7 @@ export const paymentRoutes = [
     checkoutType: 'Checkout Link',
     configKey: 'POLAR_SNAPSHOT_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_SNAPSHOT_CHECKOUT_URL,
-    buttonLabel: 'Add Polar link',
+    buttonLabel: 'Buy $19 Snapshot',
     successUrl: `${liveBaseUrl}/site/success/snapshot/?checkout_id={CHECKOUT_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://polar.sh/docs/features/checkout/links',
@@ -45,7 +45,7 @@ export const paymentRoutes = [
     ],
     reason:
       'Best fit for the low-ticket digital product because Polar checkout links can sell productized digital offers with order, subscription, benefit, invoice, and customer state records.',
-    nextAction: 'Add the public Polar Checkout Link URL to POLAR_SNAPSHOT_CHECKOUT_URL.',
+    nextAction: 'Live Polar Checkout Link installed and smoke-tested against the $19 checkout page.',
     metadata: {
       ...sharedMetadata,
       processor: 'polar',
@@ -63,7 +63,7 @@ export const paymentRoutes = [
     checkoutType: 'Recurring Checkout Link',
     configKey: 'POLAR_DEAL_ROOM_CHECKOUT_URL',
     checkoutUrl: publicCheckoutUrls.POLAR_DEAL_ROOM_CHECKOUT_URL,
-    buttonLabel: 'Add Polar link',
+    buttonLabel: 'Join $49/mo Deal Room',
     successUrl: `${liveBaseUrl}/site/success/deal-room/?checkout_id={CHECKOUT_ID}`,
     returnUrl: siteReturnUrl,
     docsUrl: 'https://polar.sh/docs/features/checkout/links',
@@ -80,7 +80,7 @@ export const paymentRoutes = [
     ],
     reason:
       'Best fit for membership because Polar creates subscriptions from recurring products, keeps benefits in sync, and gives customers a portal for receipts and payment updates.',
-    nextAction: 'Add the public Polar recurring Checkout Link URL to POLAR_DEAL_ROOM_CHECKOUT_URL.',
+    nextAction: 'Live Polar recurring Checkout Link installed and smoke-tested against the $49/mo checkout page.',
     metadata: {
       ...sharedMetadata,
       processor: 'polar',
@@ -210,16 +210,26 @@ export function getPrimaryPaymentRouteForProduct(productSlug) {
 export function getPaymentReadiness() {
   const routes = paymentRoutes.map(withRouteStatus);
   const liveCount = routes.filter((route) => route.isLive).length;
+  const missingRoutes = routes.filter((route) => !route.isLive);
+  const mode = liveCount === routes.length ? 'live' : liveCount > 0 ? 'partial_live' : 'needs_live_urls';
+  const statusLabel =
+    mode === 'live' ? 'Live checkout' : mode === 'partial_live' ? 'Partial live checkout' : 'Connector preview';
 
   return {
-    mode: liveCount === routes.length ? 'live' : 'needs_live_urls',
+    mode,
+    statusLabel,
     liveCount,
     totalCount: routes.length,
     percent: Math.round((liveCount / routes.length) * 100),
     summary:
-      liveCount === routes.length
+      mode === 'live'
         ? 'All public checkout URLs are wired.'
-        : 'Checkout stays in preview until the public Stripe and Polar URLs are visible in this workspace.',
+        : mode === 'partial_live'
+          ? `${liveCount} public checkout URLs are live. Remaining: ${missingRoutes
+              .map((route) => route.configKey)
+              .join(', ')}.`
+          : 'Checkout stays in preview until the public Stripe and Polar URLs are visible in this workspace.',
+    missingRoutes,
     routes,
   };
 }
@@ -312,11 +322,10 @@ export function buildPaymentConnectorAsk() {
   return [
     'Claude/orchestrator payment connector request:',
     'Keep one processor per SKU for the first live launch.',
-    'Add these public checkout URLs to the Codex sales site:',
-    '1. POLAR_SNAPSHOT_CHECKOUT_URL - Polar Checkout Link for the $19 AI Opportunity Snapshot.',
-    '2. POLAR_DEAL_ROOM_CHECKOUT_URL - Polar recurring Checkout Link for the $49/mo AI Deal Room.',
-    '3. STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK - Stripe Payment Link for the $99 Sprint deposit.',
-    '4. STRIPE_SPRINT_BALANCE_PAYMENT_LINK - Stripe hosted invoice or Payment Link for the Sprint balance.',
+    'Polar public checkout URLs are already installed for the $19 AI Opportunity Snapshot and $49/mo AI Deal Room.',
+    'Add these remaining public checkout URLs to the Codex sales site after Stripe onboarding is complete:',
+    '1. STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK - Stripe Payment Link for the $99 Sprint deposit.',
+    '2. STRIPE_SPRINT_BALANCE_PAYMENT_LINK - Stripe hosted invoice or Payment Link for the Sprint balance.',
     'Do not send API keys, restricted keys, or webhook secrets to the static site. Public checkout URLs only.',
     'Metadata to use on every checkout: challenge=ai-money-challenge, operator=codex, variant=codex-live, processor, offer_slug.',
   ].join('\n');

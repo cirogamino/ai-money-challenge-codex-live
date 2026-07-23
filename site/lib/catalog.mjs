@@ -173,10 +173,10 @@ export function getSuperChecklist() {
         },
         {
           label: 'Live checkout URLs',
-          owner: 'Claude orchestrator',
-          status: 'blocked',
+          owner: 'Codex and Claude orchestrator',
+          status: 'in_progress',
           detail:
-            'Stripe live product and price exist, but Stripe Payment Link is blocked until charges_enabled is true. Polar URLs still need a Polar connector or dashboard link export.',
+            'Polar Snapshot and Deal Room checkout URLs are live. Stripe Payment Links remain blocked until charges_enabled is true.',
         },
       ],
     },
@@ -260,7 +260,7 @@ export function getProjectProgress() {
     queued,
     total: items.length,
     currentPhase: 'First-dollar connector wiring',
-    nextMilestone: 'Replace connector previews with live Stripe, Polar, intake, ledger, and subdomain routing.',
+    nextMilestone: 'Finish Stripe checkout URLs, webhook-backed ledger sync, and subdomain routing.',
   };
 }
 
@@ -288,8 +288,8 @@ export function getLaunchTimeline() {
     definitionOfDone: [
       {
         label: 'Payment URLs',
-        status: 'blocked',
-        need: 'Four public Stripe and Polar checkout URLs installed into the prepared slots.',
+        status: 'in_progress',
+        need: 'Two Polar checkout URLs are live; install the two Stripe URLs after account onboarding enables Payment Links.',
       },
       {
         label: 'Subdomain routing',
@@ -316,8 +316,8 @@ export function getLaunchTimeline() {
       {
         name: 'Payment activation',
         window: '0.5 day',
-        status: 'blocked',
-        output: 'Create the four hosted checkout URLs and run the safe installer.',
+        status: 'in_progress',
+        output: 'Polar is live; create the two Stripe hosted checkout URLs after onboarding clears.',
       },
       {
         name: 'Subdomain cutover',
@@ -346,8 +346,8 @@ export function getLaunchTimeline() {
     ],
     speedUps: [
       {
-        title: 'Batch the checkout URLs',
-        effect: 'Cuts one to two days by creating all Stripe and Polar links in one dashboard pass instead of one product at a time.',
+        title: 'Finish the remaining Stripe URLs',
+        effect: 'Cuts one to two days by completing Stripe onboarding once, then creating both Sprint links in the same dashboard pass.',
       },
       {
         title: 'Pick one hostname now',
@@ -376,7 +376,7 @@ export function getGoButtonDashboard() {
     title: 'Go Button dashboard',
     primaryCommand: 'Authorize connectors, then press Go',
     launchReadyPercent: progress.percent,
-    status: 'Preview-ready, connector-blocked',
+    status: 'Polar live, Stripe connector-blocked',
     connectors: [
       {
         name: 'Subdomain',
@@ -388,13 +388,13 @@ export function getGoButtonDashboard() {
         name: 'Payment link',
         state: 'in_progress',
         owner: 'Codex and Claude orchestrator',
-        action: 'Use the setup buttons, then install the four public checkout URLs with the safe installer.',
+        action: 'Polar Snapshot and Deal Room are live; install Stripe deposit and balance URLs after onboarding clears.',
       },
       {
         name: '$99 Sprint deposit',
-        state: 'done',
-        owner: 'Codex',
-        action: 'Use the deposit copy and modal flow now; replace preview with the live paid link later.',
+        state: 'blocked',
+        owner: 'Claude orchestrator',
+        action: 'Finish Stripe onboarding, then create the $99 Payment Link from the existing Codex price.',
       },
       {
         name: 'Instant Snapshot delivery',
@@ -554,7 +554,7 @@ export function getProductVisualSuite() {
 
 export function getMasterLaunchChecklist() {
   return {
-    updatedAt: '2026-07-23T01:55:00-05:00',
+    updatedAt: '2026-07-23T21:32:00-05:00',
     title: 'Codex launch master checklist',
     summary:
       'A timestamped, cross-agent checklist for making the Codex offer live, sellable, and duplicatable by every competing AI.',
@@ -614,9 +614,10 @@ export function getMasterLaunchChecklist() {
           {
             code: 'codex-polar-checkout-links',
             label: 'Polar Checkout Links',
-            status: 'blocked',
-            completedAt: '',
-            detail: 'No Polar connector or POLAR token is available in this environment; Claude needs to provide URLs or enable a Polar tool.',
+            status: 'done',
+            completedAt: '2026-07-23T21:26:00-05:00',
+            detail:
+              'Snapshot product 8e02a470-97db-4c5c-94e2-70dc6d7f0c61 / link f2e428e0-641b-476b-9211-e2d20c3a1062 and Deal Room product 668cf0b1-21b5-45da-a8b4-db9ec8077d2b / link b6cb5225-5476-4c02-a71c-701c31521340 are live on buy.polar.sh.',
           },
         ],
       },
@@ -685,12 +686,12 @@ export function getCheckoutState() {
 
   return {
     mode: paymentReadiness.mode === 'live' ? 'live' : 'preview',
-    isPaymentLive: paymentReadiness.mode === 'live',
+    isPaymentLive: paymentReadiness.liveCount > 0,
     primaryButtonLabel: sprintDeposit.cta,
-    liveLabel: paymentReadiness.mode === 'live' ? 'Live checkout' : 'Connector preview',
-    pendingConnectors: ['Stripe URL', 'Polar URL', 'intake form', 'ledger sync', 'subdomain routing'],
+    liveLabel: paymentReadiness.statusLabel,
+    pendingConnectors: ['Stripe URL', 'ledger sync', 'subdomain routing'],
     buyerMessage:
-      'Payments are not live in this preview until the public Stripe and Polar checkout URLs are installed. API keys and webhook secrets stay out of the static site.',
+      'Polar checkout is live for the Snapshot and Deal Room. Sprint payments stay in preview until the public Stripe URLs are installed; API keys and webhook secrets stay out of the static site.',
     actions: [
       {
         label: 'Buy $19 Snapshot',
@@ -901,7 +902,7 @@ export function getLaunchReadiness() {
       {
         name: 'Payment link',
         owner: 'Codex build packet',
-        status: 'Use the on-page setup buttons and safe installer for Polar Checkout Links, Stripe Payment Links, and hosted invoices.',
+        status: 'Polar Checkout Links are live; Stripe Payment Links and hosted invoices remain after account onboarding.',
       },
       {
         name: 'Sprint deposit',

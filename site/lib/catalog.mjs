@@ -1,5 +1,6 @@
 import {
   buildPaymentConnectorAsk,
+  getBestPaymentRouteForProduct,
   getPaymentReadiness,
   getPaymentRouteBySlug,
 } from './paymentRoutes.mjs';
@@ -62,7 +63,7 @@ export const products = [
       'Launch script packet',
     ],
     cta: 'Reserve $99 Sprint deposit',
-    checkoutAction: 'Stripe Payment Link - STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK',
+    checkoutAction: 'Stripe Payment Link with Polar fallback - STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK or POLAR_SPRINT_DEPOSIT_CHECKOUT_URL',
   },
 ];
 
@@ -82,7 +83,7 @@ export function getSprintDepositOffer() {
     cta: 'Reserve $99 Sprint deposit',
     buyerPromise:
       'Reserve one of the 3 Sprint slots, credit the deposit toward the $1,500 build, and trigger qualification before full delivery.',
-    connector: 'Stripe Payment Link or hosted invoice',
+    connector: 'Stripe Payment Link preferred; Polar Checkout Link fallback while Stripe onboarding is blocked',
   };
 }
 
@@ -150,8 +151,9 @@ export function getSuperChecklist() {
         {
           label: '$99 Sprint deposit option',
           owner: 'Codex',
-          status: 'done',
-          detail: 'The site now shows a $99 deposit path that credits toward the $1,500 Sprint.',
+          status: 'in_progress',
+          detail:
+            'The site now supports Stripe as the preferred route plus a Polar fallback slot that can go live if Stripe remains blocked.',
         },
         {
           label: 'Instant Snapshot delivery',
@@ -163,20 +165,22 @@ export function getSuperChecklist() {
           label: 'Stripe and Polar processor split',
           owner: 'Codex',
           status: 'done',
-          detail: 'Polar owns Snapshot and Deal Room. Stripe owns the Sprint deposit and balance.',
+          detail:
+            'Polar owns Snapshot and Deal Room. Stripe owns the Sprint deposit and balance, with Polar deposit fallback hidden in ops mode.',
         },
         {
           label: 'Payment link connector packet',
           owner: 'Codex',
           status: 'done',
-          detail: 'Exact public checkout URL slots, setup links, and installer command are defined for Stripe and Polar.',
+          detail:
+            'Exact public checkout URL slots, setup links, and installer command are defined for Stripe, Polar, and the Polar Sprint fallback.',
         },
         {
           label: 'Live checkout URLs',
           owner: 'Codex and Claude orchestrator',
           status: 'in_progress',
           detail:
-            'Polar Snapshot and Deal Room checkout URLs are live. Stripe Payment Links remain blocked until charges_enabled is true.',
+            'Polar Snapshot and Deal Room checkout URLs are live. Polar Sprint deposit fallback is ready to create; Stripe Payment Links remain blocked until charges_enabled is true.',
         },
       ],
     },
@@ -193,8 +197,8 @@ export function getSuperChecklist() {
         {
           label: 'Subdomain decision for Claude',
           owner: 'Claude orchestrator',
-          status: 'blocked',
-          detail: 'Claude still needs to confirm codex.cedogamino.com or chatgtp.cedogamino.com.',
+          status: 'done',
+          detail: 'codex.cirogamino.com is the current public custom-domain route for the Codex sales site.',
         },
         {
           label: 'Buyer intake form',
@@ -215,9 +219,15 @@ export function getSuperChecklist() {
       summary: 'Next improvements can raise conversion after core connectors are live.',
       items: [
         {
-          label: 'Founder video block',
+          label: 'Buyer-first storefront mode',
           owner: 'Codex',
           status: 'done',
+          detail: 'Cold buyers see the offer path first; internal progress, payments, and checklists move behind ops mode.',
+        },
+        {
+          label: 'Founder video block',
+          owner: 'Codex',
+          status: 'queued',
           detail: 'The trust section has a ready slot for a short Ciro intro before launch.',
         },
         {
@@ -259,8 +269,8 @@ export function getProjectProgress() {
     blocked,
     queued,
     total: items.length,
-    currentPhase: 'First-dollar connector wiring',
-    nextMilestone: 'Finish Stripe checkout URLs, webhook-backed ledger sync, and subdomain routing.',
+    currentPhase: 'Buyer storefront and deposit fallback',
+    nextMilestone: 'Create the Polar Sprint deposit fallback, then wire webhook-backed ledger sync when a backend is authorized.',
   };
 }
 
@@ -268,43 +278,43 @@ export function getLaunchTimeline() {
   const progress = getProjectProgress();
 
   return {
-    asOf: '2026-07-23',
+    asOf: '2026-07-27',
     title: 'Estimated timeline to a 100% live product',
     currentPace: {
       label: 'Current pace ETA',
-      etaDate: '2026-07-27',
-      daysRemaining: 4,
+      etaDate: '2026-07-28',
+      daysRemaining: 1,
       percent: progress.percent,
       summary:
-        'At the current build-and-connector pace, the full sellable system should be ready in about four calendar days once each connector is handled in sequence.',
+        'At the current build-and-connector pace, the buyer storefront can be cash-ready within about one calendar day if the Polar deposit fallback is created and installed.',
     },
     fastTrack: {
       label: 'Fast-track ETA',
-      etaDate: '2026-07-24',
-      daysRemaining: 1,
+      etaDate: '2026-07-27',
+      daysRemaining: 0,
       summary:
-        'If payment URLs, subdomain choice, intake destination, ledger access, and webhook target are bundled into one approval block, the same system can compress into roughly one day.',
+        'If the Polar deposit link is created now and pasted into the prepared slot, the public page can start taking Snapshot, Deal Room, and deposit payments today.',
     },
     definitionOfDone: [
       {
         label: 'Payment URLs',
         status: 'in_progress',
-        need: 'Two Polar checkout URLs are live; install the two Stripe URLs after account onboarding enables Payment Links.',
+        need: 'Two Polar checkout URLs are live; create the Polar Sprint deposit fallback now and install Stripe URLs after onboarding clears.',
       },
       {
         label: 'Subdomain routing',
-        status: 'blocked',
-        need: 'Final hostname confirmed and pointed at the public sales site.',
+        status: 'done',
+        need: 'codex.cirogamino.com is the current public custom-domain route for Codex.',
       },
       {
         label: 'Buyer intake',
-        status: 'queued',
-        need: 'One intake form that captures Snapshot, Deal Room, and Sprint buyer context.',
+        status: 'done',
+        need: 'Static success pages capture Snapshot, Deal Room, and Sprint buyer context.',
       },
       {
         label: 'Instant delivery',
-        status: 'queued',
-        need: 'Snapshot output and Sprint next-step packet triggered after payment.',
+        status: 'in_progress',
+        need: 'Snapshot and Sprint packets exist locally; verified webhooks still need a backend before claiming automated delivery.',
       },
       {
         label: 'Ledger reconciliation',
@@ -314,28 +324,28 @@ export function getLaunchTimeline() {
     ],
     phases: [
       {
-        name: 'Payment activation',
-        window: '0.5 day',
+        name: 'Buyer storefront split',
+        window: 'Done today',
+        status: 'done',
+        output: 'Buyer mode leads with the offer; ops mode keeps progress, connector, and checklist detail behind ?ops=1.',
+      },
+      {
+        name: 'Polar deposit fallback',
+        window: '0.25 day',
         status: 'in_progress',
-        output: 'Polar is live; create the two Stripe hosted checkout URLs after onboarding clears.',
+        output: 'Create one Polar $99 deposit link so the highest-value CTA can collect money before Stripe clears.',
       },
       {
-        name: 'Subdomain cutover',
-        window: '0.5 day',
+        name: 'Stripe repair',
+        window: '0.5 day after onboarding',
         status: 'blocked',
-        output: 'Choose codex.cedogamino.com or chatgtp.cedogamino.com and point it at the live site.',
-      },
-      {
-        name: 'Intake and delivery',
-        window: '1 day',
-        status: 'queued',
-        output: 'Connect the buyer form to Snapshot delivery and Sprint qualification.',
+        output: 'Finish Stripe onboarding, then create the preferred deposit link and hosted balance invoice.',
       },
       {
         name: 'Webhook and ledger',
         window: '1 day',
         status: 'queued',
-        output: 'Route Stripe and Polar events into the shared cash ledger and delivery status.',
+        output: 'Route Polar and Stripe events into verified cash rows, fulfillment status, and challenge reporting.',
       },
       {
         name: 'Final live smoke test',
@@ -346,12 +356,16 @@ export function getLaunchTimeline() {
     ],
     speedUps: [
       {
+        title: 'Create the Polar deposit fallback first',
+        effect: 'Avoids waiting on Stripe before the highest-value CTA can collect a $99 commitment.',
+      },
+      {
         title: 'Finish the remaining Stripe URLs',
         effect: 'Cuts one to two days by completing Stripe onboarding once, then creating both Sprint links in the same dashboard pass.',
       },
       {
-        title: 'Pick one hostname now',
-        effect: 'Removes the subdomain branch from the work and lets the live URL, success URLs, and checkout copy settle.',
+        title: 'Keep buyer mode clean',
+        effect: 'Removes connector language from the cold-visitor path while preserving the full ops board for Ciro and Claude.',
       },
       {
         title: 'Use one intake destination',
@@ -374,27 +388,33 @@ export function getGoButtonDashboard() {
 
   return {
     title: 'Go Button dashboard',
-    primaryCommand: 'Authorize connectors, then press Go',
+    primaryCommand: 'Authorize fallback deposit, then press Go',
     launchReadyPercent: progress.percent,
-    status: 'Polar live, Stripe connector-blocked',
+    status: 'Buyer mode ready, Polar fallback next, Stripe blocked',
     connectors: [
       {
+        name: 'Buyer storefront',
+        state: 'done',
+        owner: 'Codex',
+        action: 'Make the public page lead with proof, offer path, guarantee, and checkout buttons instead of ops language.',
+      },
+      {
         name: 'Subdomain',
-        state: 'blocked',
+        state: 'done',
         owner: 'Claude orchestrator',
-        action: 'Confirm codex.cedogamino.com or chatgtp.cedogamino.com.',
+        action: 'Use codex.cirogamino.com as the current public Codex sales route.',
       },
       {
         name: 'Payment link',
         state: 'in_progress',
         owner: 'Codex and Claude orchestrator',
-        action: 'Polar Snapshot and Deal Room are live; install Stripe deposit and balance URLs after onboarding clears.',
+        action: 'Polar Snapshot and Deal Room are live; create the Polar Sprint deposit fallback now and Stripe links after onboarding clears.',
       },
       {
-        name: '$99 Sprint deposit',
-        state: 'blocked',
-        owner: 'Claude orchestrator',
-        action: 'Finish Stripe onboarding, then create the $99 Payment Link from the existing Codex price.',
+        name: 'Polar Sprint fallback',
+        state: 'in_progress',
+        owner: 'Codex and Claude orchestrator',
+        action: 'Create one $99 Polar Checkout Link using the prepared setup spec and install it in POLAR_SPRINT_DEPOSIT_CHECKOUT_URL.',
       },
       {
         name: 'Instant Snapshot delivery',
@@ -404,9 +424,9 @@ export function getGoButtonDashboard() {
       },
       {
         name: 'Buyer intake',
-        state: 'queued',
-        owner: 'Claude orchestrator',
-        action: 'Create one form that captures buyer context and triggers fulfillment.',
+        state: 'done',
+        owner: 'Codex',
+        action: 'Static success pages collect buyer context and generate fulfillment packet drafts.',
       },
       {
         name: 'Ledger sync',
@@ -426,10 +446,10 @@ export function getGoButtonDashboard() {
 
 export function getLaunchPreviewDeck() {
   return {
-    contextLabel: 'Founder preview samples',
-    headline: 'The launch now has believable sample artifacts for each offer.',
+    contextLabel: 'Sample buyer outcome',
+    headline: 'The launch now has specific sample outcomes for each offer.',
     intro:
-      'These panels are realistic founder-preview samples, not claimed customer results. They make the site feel launch-ready today and can be swapped for real receipts after the first buyers come in.',
+      'These panels are realistic samples, not claimed customer results. They make the offer tangible now and can be swapped for real receipts after the first buyers come in.',
     productMockups: [
       {
         product: 'AI Opportunity Snapshot',
@@ -554,7 +574,7 @@ export function getProductVisualSuite() {
 
 export function getMasterLaunchChecklist() {
   return {
-    updatedAt: '2026-07-23T21:32:00-05:00',
+    updatedAt: '2026-07-27T12:49:15-05:00',
     title: 'Codex launch master checklist',
     summary:
       'A timestamped, cross-agent checklist for making the Codex offer live, sellable, and duplicatable by every competing AI.',
@@ -582,6 +602,14 @@ export function getMasterLaunchChecklist() {
             status: 'done',
             completedAt: '2026-07-23T00:42:00-05:00',
             detail: 'NorthStar, BrightPath, and Harbor sample artifacts replace generic claims.',
+          },
+          {
+            code: 'codex-buyer-storefront-mode',
+            label: 'Buyer-first storefront mode',
+            status: 'done',
+            completedAt: '2026-07-27T12:49:15-05:00',
+            detail:
+              'Public visitors see the offer, proof, guarantee, FAQ, and buying path first; ops sections are available behind ?ops=1.',
           },
         ],
       },
@@ -619,6 +647,14 @@ export function getMasterLaunchChecklist() {
             detail:
               'Snapshot product 8e02a470-97db-4c5c-94e2-70dc6d7f0c61 / link f2e428e0-641b-476b-9211-e2d20c3a1062 and Deal Room product 668cf0b1-21b5-45da-a8b4-db9ec8077d2b / link b6cb5225-5476-4c02-a71c-701c31521340 are live on buy.polar.sh.',
           },
+          {
+            code: 'codex-polar-sprint-deposit-fallback',
+            label: 'Polar Sprint deposit fallback',
+            status: 'in_progress',
+            completedAt: '',
+            detail:
+              'Create one-time Polar product and Checkout Link for the $99 Sprint deposit; install the public URL into POLAR_SPRINT_DEPOSIT_CHECKOUT_URL.',
+          },
         ],
       },
       {
@@ -652,6 +688,14 @@ export function getMasterLaunchChecklist() {
             completedAt: '',
             detail: 'Needs an authorized backend or automation target plus Stripe/Polar webhook signatures before cash can be claimed automatically.',
           },
+          {
+            code: 'codex-checkout-copy-benefits',
+            label: 'Hosted checkout copy and benefits',
+            status: 'in_progress',
+            completedAt: '',
+            detail:
+              'Polar setup specs now include checkout-page descriptions and custom benefits for Snapshot, Deal Room, and Sprint deposit.',
+          },
         ],
       },
       {
@@ -667,9 +711,9 @@ export function getMasterLaunchChecklist() {
           {
             code: 'codex-custom-subdomain',
             label: 'Custom subdomain routing',
-            status: 'blocked',
-            completedAt: '',
-            detail: 'Claude still needs to confirm codex.cedogamino.com or chatgtp.cedogamino.com and route DNS/hosting.',
+            status: 'done',
+            completedAt: '2026-07-23T21:32:00-05:00',
+            detail: 'codex.cirogamino.com is the current public custom-domain route for the Codex sales site.',
           },
         ],
       },
@@ -682,16 +726,16 @@ export function getCheckoutState() {
   const paymentReadiness = getPaymentReadiness();
   const snapshotRoute = getPaymentRouteBySlug('ai-opportunity-snapshot');
   const dealRoomRoute = getPaymentRouteBySlug('ai-deal-room');
-  const sprintDepositRoute = getPaymentRouteBySlug('ai-revenue-sprint-deposit');
+  const sprintDepositRoute = getBestPaymentRouteForProduct('ai-revenue-sprint');
 
   return {
     mode: paymentReadiness.mode === 'live' ? 'live' : 'preview',
     isPaymentLive: paymentReadiness.liveCount > 0,
     primaryButtonLabel: sprintDeposit.cta,
     liveLabel: paymentReadiness.statusLabel,
-    pendingConnectors: ['Stripe URL', 'ledger sync', 'subdomain routing'],
+    pendingConnectors: ['Polar Sprint deposit URL', 'Stripe URL', 'verified webhook ledger sync'],
     buyerMessage:
-      'Polar checkout is live for the Snapshot and Deal Room. Sprint payments stay in preview until the public Stripe URLs are installed; API keys and webhook secrets stay out of the static site.',
+      'Polar checkout is live for the Snapshot and Deal Room. The Sprint deposit has a prepared Polar fallback while Stripe onboarding remains blocked; API keys and webhook secrets stay out of the static site.',
     actions: [
       {
         label: 'Buy $19 Snapshot',
@@ -753,17 +797,198 @@ export function getRevenueFocus() {
   };
 }
 
+export function getBuyerPathCards() {
+  return [
+    {
+      label: 'Fastest live purchase',
+      productSlug: 'ai-opportunity-snapshot',
+      routeSlug: 'ai-opportunity-snapshot',
+      title: 'Start with the $19 Snapshot',
+      price: '$19',
+      detail: 'Best if you want quick proof before committing to the Sprint. The Snapshot clarifies the offer and credits toward the deposit.',
+      riskReducer: 'Low friction, immediate sample-grade output, and a direct upgrade path.',
+      cta: 'Buy Snapshot',
+    },
+    {
+      label: 'Best profit path',
+      productSlug: 'ai-revenue-sprint',
+      routeSlug: 'ai-revenue-sprint-deposit-polar',
+      title: 'Reserve a 48-Hour Sprint slot',
+      price: '$99 deposit',
+      detail: 'Best if you already have a service, audience, or lead flow and want the page, intake, delivery packet, and launch copy built fast.',
+      riskReducer: 'Deposit credits toward the $1,500 Sprint after qualification.',
+      cta: 'Reserve deposit',
+    },
+    {
+      label: 'Ongoing builder path',
+      productSlug: 'ai-deal-room',
+      routeSlug: 'ai-deal-room',
+      title: 'Join the AI Deal Room',
+      price: '$49/mo',
+      detail: 'Best if you want weekly teardown notes, reusable templates, and a deal-building rhythm after the first idea is clear.',
+      riskReducer: 'Cancel through the customer portal; week-one agenda is visible before checkout.',
+      cta: 'Join Deal Room',
+    },
+  ];
+}
+
+export function getBuyerTrustStack() {
+  return {
+    supportEmail: 'support@cirogamino.com',
+    guaranteeTitle: '48-hour delivery boundary',
+    guarantee:
+      'For a paid Sprint, the deliverable is a working sales-page draft, intake path, fulfillment packet, and launch-copy bundle within the agreed 48-hour build window. If Codex/Ciro misses that delivery window after kickoff materials are provided, the buyer gets one extra build session or a refund review.',
+    depositTerms:
+      'The $99 Sprint deposit reserves a founder slot and credits toward the $1,500 Sprint. If the buyer is not a fit after qualification, the deposit can be converted into Snapshot/Deal Room credit or reviewed for refund before build work starts.',
+    privacy:
+      'Buyer context is used to produce the purchased deliverable and internal challenge ledger proof. Payment card details stay inside Stripe or Polar hosted checkout.',
+    items: [
+      {
+        title: 'No vague AI advice',
+        detail: 'Every offer ends with a buyer, pain, promise, first paid step, and launch asset.',
+      },
+      {
+        title: 'One processor per buyer path',
+        detail: 'Buyers see a single checkout action; backup processor details stay in ops mode.',
+      },
+      {
+        title: 'Payment proof before scoreboard claims',
+        detail: 'Static pages collect intake, but cash only counts when Stripe or Polar confirms the event.',
+      },
+      {
+        title: 'Support path visible',
+        detail: 'Use support@cirogamino.com for receipt, access, or delivery questions during the challenge.',
+      },
+    ],
+  };
+}
+
+export function getDealRoomFirstWeek() {
+  return [
+    {
+      day: 'Day 0',
+      title: 'Welcome and buyer map',
+      detail: 'Pick one audience, one pain, one offer angle, and one checkout goal before adding new ideas.',
+    },
+    {
+      day: 'Day 1',
+      title: 'Offer teardown',
+      detail: 'Get the weekly teardown: headline, promise, product ladder, pricing logic, and objections.',
+    },
+    {
+      day: 'Day 3',
+      title: 'Template drop',
+      detail: 'Use the Snapshot prompt, outreach draft, FAQ skeleton, and delivery-packet checklist.',
+    },
+    {
+      day: 'Day 5',
+      title: 'Proof-of-demand scorecard',
+      detail: 'Score whether the offer is ready for checkout, needs a warmer audience, or should become a Sprint.',
+    },
+  ];
+}
+
+export function getBuyerFaq() {
+  return [
+    {
+      question: 'Do I need to know how to code?',
+      answer: 'No. The Snapshot and Sprint are designed for owners with a real workflow pain, not developers.',
+    },
+    {
+      question: 'What should I bring to the Sprint?',
+      answer: 'One business workflow, one target buyer, any existing offer or lead source, and honest constraints on time and budget.',
+    },
+    {
+      question: 'What happens after I pay?',
+      answer: 'You land on a product-specific intake page, generate the delivery packet, and get routed into Snapshot delivery, Deal Room access, or Sprint qualification.',
+    },
+    {
+      question: 'Is the $99 deposit the full Sprint price?',
+      answer: 'No. It reserves and qualifies a Sprint slot, then credits toward the $1,500 total if the build proceeds.',
+    },
+    {
+      question: 'Why only 3 Sprint slots?',
+      answer: 'The challenge ends August 3, and a 48-hour build requires focused execution. Scarcity is based on capacity, not a fake countdown.',
+    },
+    {
+      question: 'Can I cancel the membership?',
+      answer: 'Yes. The Deal Room is recurring, and hosted customer-portal access should handle receipts, card updates, and cancellation.',
+    },
+  ];
+}
+
+export function getHostedCheckoutCopyPlan() {
+  return [
+    {
+      routeSlug: 'ai-opportunity-snapshot',
+      title: 'AI Opportunity Snapshot checkout copy',
+      copy:
+        'A 15-minute AI opportunity report for one leaky workflow: score, buyer promise, first launch message, and $19 Sprint credit.',
+      benefit: 'Attach a file download or custom benefit with Snapshot delivery instructions.',
+    },
+    {
+      routeSlug: 'ai-deal-room',
+      title: 'AI Deal Room checkout copy',
+      copy:
+        'Weekly offer teardowns, prompt/page templates, and a proof-of-demand scorecard for builders turning AI ideas into receipts.',
+      benefit: 'Attach a custom benefit with the member welcome link, first-week agenda, and customer portal instructions.',
+    },
+    {
+      routeSlug: 'ai-revenue-sprint-deposit-polar',
+      title: 'Polar Sprint deposit fallback copy',
+      copy:
+        'Reserve one of 3 founder Sprint slots before August 3. The $99 deposit credits toward the $1,500 48-Hour AI Revenue Sprint after qualification.',
+      benefit: 'Attach a custom benefit with Sprint intake, support email, and deposit-credit terms.',
+    },
+  ];
+}
+
+export function getExecutiveAssistantQueue() {
+  return {
+    title: 'Ciro fast-answer queue',
+    summary:
+      'Codex keeps building with safe defaults, but these answers make the launch sharper when Ciro or Claude has a minute.',
+    questions: [
+      {
+        question: 'Which buyer wedge should the first public push lead with?',
+        defaultAnswer: 'Local service owners with missed quote or follow-up leaks.',
+        moneyImpact: 'Sharper copy and outreach, fewer broad-AI objections.',
+      },
+      {
+        question: 'What support identity should buyers see?',
+        defaultAnswer: 'support@cirogamino.com and Codex Revenue Lab.',
+        moneyImpact: 'Higher checkout trust and fewer refund/support surprises.',
+      },
+      {
+        question: 'What refund boundary feels right?',
+        defaultAnswer: 'Delivery-window guarantee plus deposit review before build work starts.',
+        moneyImpact: 'Reduces purchase fear without promising impossible revenue outcomes.',
+      },
+      {
+        question: 'Can we use a short founder video from Ciro?',
+        defaultAnswer: 'Use the prepared script until a real video is recorded.',
+        moneyImpact: 'A human face can raise trust faster than another paragraph of copy.',
+      },
+      {
+        question: 'Who should get the first private test link?',
+        defaultAnswer: 'One warm business owner with a real lead-follow-up or intake pain.',
+        moneyImpact: 'Fastest route to a real receipt and first testimonial candidate.',
+      },
+    ],
+  };
+}
+
 export function getTargetNiches() {
   return [
+    {
+      name: 'Local Service Owners',
+      pain: 'Warm quotes, intake forms, and follow-up texts leak money because no one owns the next best action fast enough.',
+      sprintAngle: 'Turn one intake, follow-up, quote, or customer education workflow into a simple revenue-ready AI offer.',
+    },
     {
       name: 'Consultants',
       pain: 'They know their expertise is valuable, but their offer still looks like hourly advice.',
       sprintAngle: 'Package one repeatable client problem into a paid AI-assisted diagnostic or implementation sprint.',
-    },
-    {
-      name: 'Local Service Owners',
-      pain: 'They hear about AI everywhere but do not know which workflow could actually make or save money.',
-      sprintAngle: 'Turn one intake, follow-up, quote, or customer education workflow into a simple revenue-ready offer.',
     },
     {
       name: 'Creators',
@@ -832,16 +1057,16 @@ export function getQualificationResult(answers) {
 
 export function getConversionUpgrades() {
   return [
-    { title: 'Sprint-first hero', status: 'built into this version' },
-    { title: 'Book + pay deposit CTA', status: 'built into this version' },
-    { title: '$19 Snapshot tripwire framing', status: 'built into this version' },
-    { title: 'ROI calculator', status: 'built into this version' },
-    { title: 'Qualification quiz', status: 'built into this version' },
-    { title: 'Three specific buyer niches', status: 'built into this version' },
-    { title: 'Real scarcity with 3 sprint slots', status: 'built into this version' },
-    { title: 'Instant checkout connector rail', status: 'built into this version' },
-    { title: 'Before and after proof section', status: 'built into this version' },
-    { title: 'Founder and challenge trust section', status: 'built into this version' },
+    { title: 'Buyer-first storefront default', status: 'built into this version' },
+    { title: 'Ops console hidden behind ?ops=1', status: 'built into this version' },
+    { title: 'Polar Sprint deposit fallback slot', status: 'built into this version' },
+    { title: 'Hosted checkout copy and benefits plan', status: 'built into this version' },
+    { title: 'Webhook-verification warning before cash claims', status: 'built into this version' },
+    { title: 'Deal Room first-week agenda', status: 'built into this version' },
+    { title: 'Local-service follow-up wedge', status: 'built into this version' },
+    { title: 'Refund and deposit boundary', status: 'built into this version' },
+    { title: 'Collapsed buyer checkout path', status: 'built into this version' },
+    { title: 'August 3 capacity urgency', status: 'built into this version' },
   ];
 }
 
@@ -896,23 +1121,29 @@ export function getLaunchReadiness() {
     blocks: [
       {
         name: 'Subdomain confirmation',
-        owner: 'Claude orchestrator',
-        status: 'Ask which hostname should route to Codex/ChatGPT sales site.',
+        owner: 'Codex and Claude orchestrator',
+        status: 'Use codex.cirogamino.com as the current public custom-domain route.',
       },
       {
         name: 'Payment link',
         owner: 'Codex build packet',
-        status: 'Polar Checkout Links are live; Stripe Payment Links and hosted invoices remain after account onboarding.',
+        status:
+          'Polar Snapshot and Deal Room links are live; Polar Sprint fallback and Stripe deposit/balance links are the remaining checkout work.',
       },
       {
-        name: 'Sprint deposit',
+        name: 'Polar Sprint fallback',
         owner: 'Codex build packet',
-        status: 'Connect STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK for the $99 deposit and keep the full balance on Stripe.',
+        status: 'Create one $99 Polar Checkout Link and install POLAR_SPRINT_DEPOSIT_CHECKOUT_URL while Stripe remains blocked.',
+      },
+      {
+        name: 'Stripe repair',
+        owner: 'Codex build packet',
+        status: 'Connect STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK and STRIPE_SPRINT_BALANCE_PAYMENT_LINK after Stripe onboarding enables payments.',
       },
       {
         name: 'Intake form',
-        owner: 'Codex build packet',
-        status: 'Create one lightweight buyer intake that feeds fulfillment and ledger.',
+        owner: 'Codex',
+        status: 'Static buyer intake pages exist for hosted checkout redirects and generate fulfillment packet drafts.',
       },
       {
         name: 'Ledger sync',
@@ -926,8 +1157,9 @@ export function getLaunchReadiness() {
 export function buildClaudeDeploymentAsk() {
   return [
     'Claude/orchestrator handoff request:',
-    'Confirm whether the Codex/ChatGPT sales site should live at codex.cedogamino.com or chatgtp.cedogamino.com.',
-    'After Ciro authorizes the final connector stack, use the setup buttons or PAYMENT_CONNECTOR_PLAN.md to wire the chosen subdomain, Polar Snapshot checkout, Polar Deal Room checkout, Stripe $99 Sprint deposit, Stripe Sprint balance path, intake form, instant Snapshot delivery, and ledger update.',
+    'Use codex.cirogamino.com as the current Codex/ChatGPT public sales route unless Ciro explicitly changes the hostname.',
+    'The public page now defaults to buyer mode; append ?ops=1 to review the internal progress, payment, checklist, and connector boards.',
+    'After Ciro authorizes the final connector stack, use the setup buttons or PAYMENT_CONNECTOR_PLAN.md to wire the Polar Sprint deposit fallback, Stripe $99 Sprint deposit, Stripe Sprint balance path, verified webhook ledger update, and any upgraded hosted checkout benefits.',
     'Goal: Ciro should only need to authorize and press go, not manually post, DM, or stitch systems together.',
     '',
     buildPaymentConnectorAsk(),

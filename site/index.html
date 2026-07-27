@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AI Money Challenge Sales Console</title>
+    <title>AI Revenue Sprint | Codex Revenue Lab</title>
     <meta
       name="description"
-      content="A local preview sales site for the Codex AI Money Challenge product ladder: Snapshot, Deal Room, and 48-Hour AI Revenue Sprint."
+      content="Buy an AI Opportunity Snapshot, join the AI Deal Room, or reserve a 48-Hour AI Revenue Sprint slot with Codex Revenue Lab."
     >
-    <link rel="stylesheet" href="./styles.css?v=20260723d">
+    <link rel="stylesheet" href="./styles.css?v=20260727a">
   </head>
-  <body>
+  <body class="buyer-mode">
     <header class="topbar" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="AI Money Challenge Sales Console home">
         <span class="brand-mark" aria-hidden="true">C</span>
@@ -22,21 +22,24 @@
       <nav class="nav-links" aria-label="Page sections">
         <a href="#proof">Proof</a>
         <a href="#roi-calculator">ROI</a>
-        <a href="#project-progress">Progress</a>
-        <a href="#launch-product-preview">Preview</a>
-        <a href="#product-visual-suite">Visuals</a>
-        <a href="#master-launch-checklist">Master</a>
-        <a href="#go-button-dashboard">Go</a>
-        <a href="#payment-operating-system">Payments</a>
         <a href="#qualifier">Quiz</a>
-        <a href="#super-checklist">Checklist</a>
         <a href="#product-ladder">Buy</a>
-        <a href="#launch-readiness">Launch</a>
+        <a href="#buyer-faq">FAQ</a>
+        <a href="#checkout-confidence">Guarantee</a>
+        <a href="#project-progress" data-ops-link>Progress</a>
+        <a href="#launch-product-preview" data-ops-link>Preview</a>
+        <a href="#product-visual-suite" data-ops-link>Visuals</a>
+        <a href="#master-launch-checklist" data-ops-link>Master</a>
+        <a href="#go-button-dashboard" data-ops-link>Go</a>
+        <a href="#payment-operating-system" data-ops-link>Payments</a>
+        <a href="#super-checklist" data-ops-link>Checklist</a>
+        <a href="#launch-readiness" data-ops-link>Launch</a>
+        <a class="ops-toggle" id="ops-toggle" href="?ops=1#project-progress">Ops</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="project-progress" id="project-progress" aria-labelledby="project-progress-title">
+      <section class="project-progress" id="project-progress" aria-labelledby="project-progress-title" data-ops-section>
         <div class="section-inner progress-layout">
           <div>
             <p class="eyebrow">Whole project progress</p>
@@ -56,7 +59,7 @@
         </div>
       </section>
 
-      <section class="launch-timeline" id="launch-timeline" aria-labelledby="launch-timeline-title">
+      <section class="launch-timeline" id="launch-timeline" aria-labelledby="launch-timeline-title" data-ops-section>
         <div class="section-inner timeline-shell">
           <div class="timeline-header">
             <div>
@@ -117,7 +120,21 @@
         </div>
       </section>
 
-      <section class="section launch-preview-section" id="launch-product-preview" aria-labelledby="launch-preview-title">
+      <section class="section buyer-path-section" id="buyer-path" aria-labelledby="buyer-path-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Fastest paid path</p>
+            <h2 id="buyer-path-title">Pick the smallest step that matches your urgency.</h2>
+            <p>
+              One clear buyer path beats a wall of AI options. Start with proof, reserve a
+              founder Sprint slot, or join the weekly build room.
+            </p>
+          </div>
+          <div class="buyer-path-grid" id="buyer-path-grid"></div>
+        </div>
+      </section>
+
+      <section class="section launch-preview-section" id="launch-product-preview" aria-labelledby="launch-preview-title" data-ops-section>
         <div class="section-inner">
           <div class="section-heading">
             <p class="eyebrow">Launch-ready product previews</p>
@@ -128,7 +145,7 @@
         </div>
       </section>
 
-      <section class="section product-visual-section" id="product-visual-suite" aria-labelledby="product-visual-title">
+      <section class="section product-visual-section" id="product-visual-suite" aria-labelledby="product-visual-title" data-ops-section>
         <div class="section-inner product-visual-layout">
           <div class="product-visual-copy">
             <p class="eyebrow">Sellable product visuals</p>
@@ -143,7 +160,7 @@
         </div>
       </section>
 
-      <section class="section master-checklist-section" id="master-launch-checklist" aria-labelledby="master-checklist-title">
+      <section class="section master-checklist-section" id="master-launch-checklist" aria-labelledby="master-checklist-title" data-ops-section>
         <div class="section-inner">
           <div class="section-heading">
             <p class="eyebrow">Master operating checklist</p>
@@ -155,7 +172,7 @@
         </div>
       </section>
 
-      <section class="section go-section" id="go-button-dashboard" aria-labelledby="go-button-title">
+      <section class="section go-section" id="go-button-dashboard" aria-labelledby="go-button-title" data-ops-section>
         <div class="section-inner">
           <div class="go-header">
             <div>
@@ -177,7 +194,7 @@
         </div>
       </section>
 
-      <section class="section payment-section" id="payment-operating-system" aria-labelledby="payment-title">
+      <section class="section payment-section" id="payment-operating-system" aria-labelledby="payment-title" data-ops-section>
         <div class="section-inner">
           <div class="payment-header">
             <div>
@@ -197,7 +214,7 @@
         </div>
       </section>
 
-      <section class="section profit-system-section" id="profit-upgrade-system" aria-labelledby="profit-system-title">
+      <section class="section profit-system-section" id="profit-upgrade-system" aria-labelledby="profit-system-title" data-ops-section>
         <div class="section-inner">
           <div class="section-heading">
             <p class="eyebrow">10 Stripe / Polar profit upgrades</p>
@@ -253,6 +270,21 @@
             </p>
           </div>
           <div class="fulfillment-grid" id="fulfillment-preview-grid"></div>
+        </div>
+      </section>
+
+      <section class="section checkout-confidence-section" id="checkout-confidence" aria-labelledby="checkout-confidence-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Buyer confidence</p>
+            <h2 id="checkout-confidence-title">Clear terms before anybody pays.</h2>
+            <p>
+              The goal is simple: make the buyer comfortable enough to act, while keeping
+              payment verification, refunds, support, and delivery promises honest.
+            </p>
+          </div>
+          <div class="trust-stack-grid" id="trust-stack-grid"></div>
+          <div class="policy-grid" id="policy-grid"></div>
         </div>
       </section>
 
@@ -329,6 +361,20 @@
             </p>
           </div>
           <div class="checkout-grid" id="checkout-grid"></div>
+        </div>
+      </section>
+
+      <section class="section deal-room-week-section" id="deal-room-week" aria-labelledby="deal-room-week-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Deal Room first week</p>
+            <h2 id="deal-room-week-title">The membership has a real week-one rhythm.</h2>
+            <p>
+              A subscription should not feel like paying for a mystery folder. Here is what
+              a buyer gets right after joining.
+            </p>
+          </div>
+          <div class="deal-week-grid" id="deal-week-grid"></div>
         </div>
       </section>
 
@@ -419,7 +465,7 @@
         </div>
       </section>
 
-      <section class="section checklist-section" id="super-checklist" aria-labelledby="checklist-title">
+      <section class="section checklist-section" id="super-checklist" aria-labelledby="checklist-title" data-ops-section>
         <div class="section-inner">
           <div class="section-heading">
             <p class="eyebrow">Super Ongoing Checklist</p>
@@ -432,6 +478,41 @@
             </p>
           </div>
           <div class="super-checklist-grid" id="super-checklist-grid"></div>
+        </div>
+      </section>
+
+      <section class="section buyer-faq-section" id="buyer-faq" aria-labelledby="buyer-faq-title">
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Fast objection FAQ</p>
+            <h2 id="buyer-faq-title">Answer the doubts before checkout.</h2>
+          </div>
+          <div class="faq-grid" id="faq-grid"></div>
+        </div>
+      </section>
+
+      <section class="section hosted-checkout-section" id="hosted-checkout-copy" aria-labelledby="hosted-checkout-title" data-ops-section>
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Hosted checkout copy</p>
+            <h2 id="hosted-checkout-title">What to paste into Polar so the payment page keeps selling.</h2>
+            <p>
+              These are ops-only checkout descriptions and benefits. They make the hosted
+              Polar page feel as strong as the sales page.
+            </p>
+          </div>
+          <div class="hosted-copy-grid" id="hosted-copy-grid"></div>
+        </div>
+      </section>
+
+      <section class="section executive-queue-section" id="executive-question-queue" aria-labelledby="executive-queue-title" data-ops-section>
+        <div class="section-inner">
+          <div class="section-heading">
+            <p class="eyebrow">Executive assistant queue</p>
+            <h2 id="executive-queue-title">Questions I am staying ahead of for Ciro.</h2>
+            <p id="executive-queue-summary"></p>
+          </div>
+          <div class="executive-question-grid" id="executive-question-grid"></div>
         </div>
       </section>
 
@@ -468,7 +549,7 @@
         </div>
       </section>
 
-      <section class="section growth-section" id="growth-ideas" aria-labelledby="growth-title">
+      <section class="section growth-section" id="growth-ideas" aria-labelledby="growth-title" data-ops-section>
         <div class="section-inner">
           <div class="section-heading">
             <p class="eyebrow">10 more money levers</p>
@@ -478,7 +559,7 @@
         </div>
       </section>
 
-      <section class="section launch-section" id="launch-readiness" aria-labelledby="launch-title">
+      <section class="section launch-section" id="launch-readiness" aria-labelledby="launch-title" data-ops-section>
         <div class="section-inner launch-layout">
           <div>
             <p class="eyebrow">Connector plan</p>
@@ -526,6 +607,6 @@
       </div>
     </div>
 
-    <script type="module" src="./app.js?v=20260723d"></script>
+    <script type="module" src="./app.js?v=20260727a"></script>
   </body>
 </html>

@@ -3,12 +3,12 @@ import {
   buildIntakeSeed,
   buildLedgerEntry,
   getFulfillmentAutomationPlan,
-  getFulfillmentRouteByFolder,
-} from '../lib/fulfillment.mjs?v=20260723d';
+  getFulfillmentRouteForRedirect,
+} from '../lib/fulfillment.mjs?v=20260727a';
 
 const routeFolder = document.body.dataset.successRoute || 'snapshot';
-const route = getFulfillmentRouteByFolder(routeFolder);
 const params = new URLSearchParams(window.location.search);
+const route = getFulfillmentRouteForRedirect(routeFolder, params);
 const seed = buildIntakeSeed(routeFolder, params);
 const plan = getFulfillmentAutomationPlan();
 

@@ -1,10 +1,16 @@
 import {
   buildClaudeDeploymentAsk,
   calculateRoi,
+  getBuyerFaq,
+  getBuyerPathCards,
+  getBuyerTrustStack,
   getCheckoutState,
   getConversionUpgrades,
+  getDealRoomFirstWeek,
+  getExecutiveAssistantQueue,
   getFeaturedMetrics,
   getGrowthIdeas,
+  getHostedCheckoutCopyPlan,
   getGoButtonDashboard,
   getLaunchPreviewDeck,
   getLaunchReadiness,
@@ -20,19 +26,26 @@ import {
   getSuperChecklist,
   getTargetNiches,
   products,
-} from './lib/catalog.mjs?v=20260723d';
+} from './lib/catalog.mjs?v=20260727a';
 import {
+  getBestPaymentRouteForProduct,
   getPaymentProfitUpgrades,
   getPaymentReadiness,
   getPaymentRouteBySlug,
   getPaymentStrategy,
   getPrimaryPaymentRouteForProduct,
   getProcessorAssignments,
-} from './lib/paymentRoutes.mjs?v=20260723d';
+} from './lib/paymentRoutes.mjs?v=20260727a';
 
 const checkoutState = getCheckoutState();
 const launchReadiness = getLaunchReadiness();
 const handoffText = buildClaudeDeploymentAsk();
+const buyerPathCards = getBuyerPathCards();
+const buyerTrustStack = getBuyerTrustStack();
+const dealRoomFirstWeek = getDealRoomFirstWeek();
+const buyerFaq = getBuyerFaq();
+const hostedCheckoutCopyPlan = getHostedCheckoutCopyPlan();
+const executiveAssistantQueue = getExecutiveAssistantQueue();
 const revenueFocus = getRevenueFocus();
 const proofTransformation = getProofTransformation();
 const projectProgress = getProjectProgress();
@@ -50,6 +63,15 @@ const paymentReadiness = getPaymentReadiness();
 const paymentProfitUpgrades = getPaymentProfitUpgrades();
 
 const metricStrip = document.querySelector('#metric-strip');
+const opsToggle = document.querySelector('#ops-toggle');
+const buyerPathGrid = document.querySelector('#buyer-path-grid');
+const trustStackGrid = document.querySelector('#trust-stack-grid');
+const policyGrid = document.querySelector('#policy-grid');
+const dealWeekGrid = document.querySelector('#deal-week-grid');
+const faqGrid = document.querySelector('#faq-grid');
+const hostedCopyGrid = document.querySelector('#hosted-copy-grid');
+const executiveQueueSummary = document.querySelector('#executive-queue-summary');
+const executiveQuestionGrid = document.querySelector('#executive-question-grid');
 const productGrid = document.querySelector('#product-grid');
 const readinessList = document.querySelector('#readiness-list');
 const heroCopy = document.querySelector('#hero-copy');
@@ -102,6 +124,17 @@ const flowCopy = document.querySelector('#flow-copy');
 const flowSteps = document.querySelector('#flow-steps');
 const handoffBox = document.querySelector('#handoff-box');
 let currentCopyText = handoffText;
+const urlParams = new URLSearchParams(window.location.search);
+const opsMode = urlParams.get('ops') === '1';
+
+document.body.classList.toggle('ops-mode', opsMode);
+document.body.classList.toggle('buyer-mode', !opsMode);
+
+if (opsToggle) {
+  opsToggle.href = opsMode ? './#top' : '?ops=1#project-progress';
+  opsToggle.textContent = opsMode ? 'Buyer page' : 'Ops';
+  opsToggle.setAttribute('aria-pressed', String(opsMode));
+}
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -119,6 +152,123 @@ function renderMetrics() {
           <dt>${escapeHtml(metric.label)}</dt>
           <dd>${escapeHtml(metric.value)}</dd>
         </div>
+      `,
+    )
+    .join('');
+}
+
+function renderBuyerPath() {
+  buyerPathGrid.innerHTML = buyerPathCards
+    .map((card) => {
+      const route = getPaymentRouteBySlug(card.routeSlug) ?? getBestPaymentRouteForProduct(card.productSlug);
+      const checkoutButton = route?.isLive
+        ? `<a class="button button-primary" href="${escapeHtml(route.checkoutUrl)}">${escapeHtml(card.cta)}</a>`
+        : `<button class="button button-primary" type="button" data-open-flow="${escapeHtml(card.productSlug)}">${escapeHtml(card.cta)}</button>`;
+      const status = route?.isLive ? 'Live checkout' : 'Prepared route';
+
+      return `
+        <article class="buyer-path-card" data-live="${escapeHtml(String(Boolean(route?.isLive)))}">
+          <span>${escapeHtml(card.label)}</span>
+          <div class="buyer-path-top">
+            <h3>${escapeHtml(card.title)}</h3>
+            <strong>${escapeHtml(card.price)}</strong>
+          </div>
+          <p>${escapeHtml(card.detail)}</p>
+          <small>${escapeHtml(card.riskReducer)}</small>
+          <div class="buyer-path-action">
+            ${checkoutButton}
+            <em>${escapeHtml(status)}</em>
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+function renderBuyerTrustStack() {
+  trustStackGrid.innerHTML = buyerTrustStack.items
+    .map(
+      (item) => `
+        <article class="trust-stack-card">
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+
+  policyGrid.innerHTML = [
+    ['Guarantee', buyerTrustStack.guarantee],
+    ['Deposit terms', buyerTrustStack.depositTerms],
+    ['Privacy', buyerTrustStack.privacy],
+    ['Support', `Questions, receipts, access, or delivery issues: ${buyerTrustStack.supportEmail}.`],
+  ]
+    .map(
+      ([title, detail]) => `
+        <article class="policy-card">
+          <span>${escapeHtml(title)}</span>
+          <p>${escapeHtml(detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderDealRoomFirstWeek() {
+  dealWeekGrid.innerHTML = dealRoomFirstWeek
+    .map(
+      (item) => `
+        <article class="deal-week-card">
+          <span>${escapeHtml(item.day)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderBuyerFaq() {
+  faqGrid.innerHTML = buyerFaq
+    .map(
+      (item) => `
+        <article class="faq-card">
+          <strong>${escapeHtml(item.question)}</strong>
+          <p>${escapeHtml(item.answer)}</p>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderHostedCheckoutCopy() {
+  hostedCopyGrid.innerHTML = hostedCheckoutCopyPlan
+    .map((item) => {
+      const route = getPaymentRouteBySlug(item.routeSlug);
+
+      return `
+        <article class="hosted-copy-card">
+          <span>${escapeHtml(route?.configKey ?? item.routeSlug)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.copy)}</p>
+          <small>${escapeHtml(item.benefit)}</small>
+        </article>
+      `;
+    })
+    .join('');
+}
+
+function renderExecutiveAssistantQueue() {
+  executiveQueueSummary.textContent = executiveAssistantQueue.summary;
+  executiveQuestionGrid.innerHTML = executiveAssistantQueue.questions
+    .map(
+      (item, index) => `
+        <article class="executive-question-card">
+          <span>${String(index + 1).padStart(2, '0')}</span>
+          <strong>${escapeHtml(item.question)}</strong>
+          <p><b>Default:</b> ${escapeHtml(item.defaultAnswer)}</p>
+          <small>${escapeHtml(item.moneyImpact)}</small>
+        </article>
       `,
     )
     .join('');
@@ -443,7 +593,11 @@ function renderProducts() {
           <ul class="include-list" aria-label="${escapeHtml(product.title)} includes">
             ${product.includes.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
           </ul>
-          <p><strong>Checkout path:</strong> ${escapeHtml(product.checkoutAction)}</p>
+          ${
+            opsMode
+              ? `<p><strong>Checkout path:</strong> ${escapeHtml(product.checkoutAction)}</p>`
+              : `<p><strong>Best fit:</strong> ${escapeHtml(product.speedToDollar)}</p>`
+          }
           <div class="card-actions">
             <button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">
               ${escapeHtml(product.cta)}
@@ -484,7 +638,8 @@ function renderCheckoutActions() {
           ${
             action.isLive
               ? `<a class="button button-primary" href="${escapeHtml(action.checkoutUrl)}">${escapeHtml(action.buttonLabel)}</a>`
-              : `
+              : opsMode
+                ? `
                 <div class="route-actions">
                   <a class="button button-primary" href="${escapeHtml(route.setupTarget.url)}" target="_blank" rel="noreferrer">
                     ${escapeHtml(route.setupTarget.label)}
@@ -493,6 +648,11 @@ function renderCheckoutActions() {
                     Preview flow
                   </button>
                 </div>
+              `
+                : `
+                <button class="button button-secondary" type="button" data-open-flow="${escapeHtml(product.slug)}">
+                  Preview next step
+                </button>
               `
           }
         </article>
@@ -604,25 +764,34 @@ function getProductBySlug(slug) {
 
 function openFlow(slug) {
   const product = getProductBySlug(slug);
-  const route = getPrimaryPaymentRouteForProduct(product.slug) ?? getPaymentRouteBySlug(slug);
+  const route = getBestPaymentRouteForProduct(product.slug) ?? getPrimaryPaymentRouteForProduct(product.slug) ?? getPaymentRouteBySlug(slug);
   const isSprint = product.slug === sprintDeposit.productSlug;
   const firstStep = isSprint
     ? `Buyer clicks ${sprintDeposit.cta} and pays ${sprintDeposit.price} toward the ${sprintDeposit.appliesTo}.`
     : `Buyer clicks ${product.cta} for ${product.title} at ${product.price}.`;
-  const paymentStep = route
-    ? `${route.processorLabel} ${route.checkoutType} collects cash once ${route.configKey} contains the public checkout URL.`
-    : `${product.checkoutAction} collects cash or deposit once the connector is authorized.`;
-  const setupSteps = route?.isLive ? [] : route?.setupSteps ?? [];
+  const paymentStep =
+    route?.isLive
+      ? `${route.processorLabel} ${route.checkoutType} is live now and sends the buyer to the correct intake page after payment.`
+      : opsMode
+        ? route
+          ? `${route.processorLabel} ${route.checkoutType} collects cash once ${route.configKey} contains the public checkout URL.`
+          : `${product.checkoutAction} collects cash or deposit once the connector is authorized.`
+        : 'The deposit path is being connected. Start with the live Snapshot today, or use this preview to decide whether the Sprint is the right fit.';
+  const setupSteps = route?.isLive || !opsMode ? [] : route?.setupSteps ?? [];
 
   flowTitle.textContent = `${product.title} - ${route?.displayStatus ?? checkoutState.liveLabel}`;
   flowStatus.textContent = route?.isLive ? 'Live checkout' : 'Connector setup';
-  flowCopy.textContent = `${product.primaryOutcome} ${checkoutState.buyerMessage}`;
+  flowCopy.textContent = opsMode
+    ? `${product.primaryOutcome} ${checkoutState.buyerMessage}`
+    : `${product.primaryOutcome} ${isSprint ? 'Only 3 founder Sprint slots are planned before August 3.' : ''}`;
   flowSteps.innerHTML = [
     firstStep,
     paymentStep,
     ...setupSteps,
-    'Intake captures buyer context and triggers fulfillment.',
-    'Claude receives the status packet so Ciro only approves the go-live step.',
+    'Intake captures buyer context and generates the delivery packet.',
+    opsMode
+      ? 'Claude receives the status packet so Ciro only approves the go-live step.'
+      : 'Support and refund boundaries stay visible before work begins.',
   ]
     .map((step) => `<li>${escapeHtml(step)}</li>`)
     .join('');
@@ -706,6 +875,12 @@ modal.addEventListener('click', (event) => {
 });
 
 renderMetrics();
+renderBuyerPath();
+renderBuyerTrustStack();
+renderDealRoomFirstWeek();
+renderBuyerFaq();
+renderHostedCheckoutCopy();
+renderExecutiveAssistantQueue();
 renderProof();
 renderProjectProgress();
 renderLaunchTimeline();

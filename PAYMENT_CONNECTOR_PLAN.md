@@ -1,13 +1,14 @@
 # Stripe / Polar Connector Plan
 
-Status: Polar public checkout URLs are live; Stripe public checkout URLs are waiting on Stripe onboarding.
+Status: Polar public checkout URLs are live for Snapshot and Deal Room; the Polar Sprint deposit fallback is ready to create; Stripe public checkout URLs are waiting on Stripe onboarding.
 
 ## Decision
 
-Use both Stripe and Polar, but do not show both processors for the same product in the first live launch.
+Use both Stripe and Polar, but do not show both processors for the same product in the buyer-facing first live launch.
 
 - Polar owns the digital products: `$19 AI Opportunity Snapshot` and `$49/mo AI Deal Room`.
-- Stripe owns the service/high-ticket path: `$99 Sprint deposit` and the Sprint balance or invoice.
+- Stripe owns the preferred service/high-ticket path: `$99 Sprint deposit` and the Sprint balance or invoice.
+- Polar can temporarily own the `$99 Sprint deposit` fallback while Stripe onboarding is blocked.
 
 This keeps checkout simple for buyers, keeps the challenge ledger easier to reconcile, and avoids putting private API keys into the static GitHub Pages site.
 
@@ -17,6 +18,7 @@ These are safe to publish because they are checkout URLs, not API secrets.
 
 - `POLAR_SNAPSHOT_CHECKOUT_URL` - Polar Checkout Link for the `$19 AI Opportunity Snapshot`.
 - `POLAR_DEAL_ROOM_CHECKOUT_URL` - Polar recurring Checkout Link for the `$49/mo AI Deal Room`.
+- `POLAR_SPRINT_DEPOSIT_CHECKOUT_URL` - Polar fallback Checkout Link for the `$99 Sprint deposit`.
 - `STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK` - Stripe Payment Link for the `$99 Sprint deposit`.
 - `STRIPE_SPRINT_BALANCE_PAYMENT_LINK` - Stripe hosted invoice or Payment Link for the Sprint balance.
 
@@ -27,6 +29,7 @@ Current Codex public URLs:
 ```text
 POLAR_SNAPSHOT_CHECKOUT_URL=https://buy.polar.sh/polar_cl_GAIdjVhfhYasYe0YIexlWl5Gtn8GHf8eUS1dC3LKBwT
 POLAR_DEAL_ROOM_CHECKOUT_URL=https://buy.polar.sh/polar_cl_Zau0s7BXL3McfQsGBPA9fySsfbvunswvaIs2q3T2Xx4
+POLAR_SPRINT_DEPOSIT_CHECKOUT_URL=
 STRIPE_SPRINT_DEPOSIT_PAYMENT_LINK=
 STRIPE_SPRINT_BALANCE_PAYMENT_LINK=
 ```
@@ -49,6 +52,7 @@ After the public checkout URLs exist, install them without touching code manuall
 node scripts/apply-checkout-links.mjs \
   --polar-snapshot=https://buy.polar.sh/... \
   --polar-deal-room=https://buy.polar.sh/... \
+  --polar-sprint-deposit=https://buy.polar.sh/... \
   --stripe-deposit=https://buy.stripe.com/... \
   --stripe-balance=https://invoice.stripe.com/...
 ```
@@ -69,14 +73,22 @@ Add these tags wherever the dashboard lets us set metadata or tracking:
 - `operator=codex`
 - `variant=codex-live`
 - `processor=stripe` or `processor=polar`
-- `offer_slug=<route slug>`
+- `offer_slug=<product or route slug>`
+- `route_slug=<route slug>` when a fallback route shares the same offer slug.
 
 ## Why This Setup
 
 - Stripe Payment Links and hosted Checkout are the fastest path for reusable service deposits, hosted invoices, and dynamic payment method conversion.
-- Polar Checkout Links support products, success URLs, return URLs, discounts, trials, seats, and metadata copied through to orders or subscriptions.
+- Polar Checkout Links support products, success URLs, return URLs, discounts, trials, seats, checkout-page descriptions, benefits, and metadata copied through to orders or subscriptions.
 - Polar subscriptions keep recurring products tied to benefits and customer portal access.
 - Webhooks come later, after we have a backend or automation target. Stripe `checkout.session.completed` and Polar `order.paid` are the key future events.
+
+## Buyer Mode And Ops Mode
+
+- Buyer page: `https://codex.cirogamino.com/site/`
+- Ops page: `https://codex.cirogamino.com/site/?ops=1`
+
+Buyer mode hides progress bars, connector setup details, and internal checklists. Ops mode shows the control center, setup specs, hosted checkout copy, and executive assistant question queue.
 
 ## Source Docs
 
@@ -92,4 +104,4 @@ Add these tags wherever the dashboard lets us set metadata or tracking:
 
 ## Next Step For Claude
 
-Finish Stripe onboarding until the account can create Payment Links, then create and install only the two remaining Stripe public URLs. The Polar Snapshot and Deal Room links are already installed and smoke-tested.
+Create the Polar `$99` Sprint deposit fallback first if Stripe remains blocked, then finish Stripe onboarding until the account can create Payment Links. After Stripe clears, create and install the preferred Stripe deposit and balance URLs. The Polar Snapshot and Deal Room links are already installed and smoke-tested.

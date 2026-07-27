@@ -110,6 +110,29 @@ a.button {
   outline: none;
 }
 
+.ops-toggle {
+  border: 1px solid rgba(56, 215, 255, 0.38);
+  color: var(--text) !important;
+  background: rgba(56, 215, 255, 0.08);
+}
+
+body.buyer-mode [data-ops-section],
+body.buyer-mode [data-ops-link] {
+  display: none;
+}
+
+body.ops-mode [data-ops-section] {
+  display: block;
+}
+
+body.ops-mode .topbar {
+  position: static;
+}
+
+body.ops-mode .project-progress {
+  top: 0;
+}
+
 .hero {
   position: relative;
   display: grid;
@@ -239,7 +262,7 @@ a.button {
 .timeline-mini-grid,
 .timeline-speed-grid,
 .timeline-phase-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
 .timeline-eta-card,
@@ -531,10 +554,34 @@ h3 {
 .checkout-grid,
 .processor-grid,
 .payment-route-grid,
-.go-grid {
+.go-grid,
+.buyer-path-grid,
+.trust-stack-grid,
+.policy-grid,
+.deal-week-grid,
+.faq-grid,
+.hosted-copy-grid,
+.executive-question-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.buyer-path-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.35fr) minmax(0, 1fr);
+}
+
+.trust-stack-grid,
+.deal-week-grid,
+.hosted-copy-grid,
+.executive-question-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.policy-grid,
+.faq-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
 }
 
 .payment-route-grid {
@@ -627,6 +674,13 @@ h3 {
 .include-list li,
 .niche-card,
 .checkout-card,
+.buyer-path-card,
+.trust-stack-card,
+.policy-card,
+.deal-week-card,
+.faq-card,
+.hosted-copy-card,
+.executive-question-card,
 .go-card,
 .processor-card,
 .payment-route-card,
@@ -650,7 +704,10 @@ h3 {
 .checkout-section,
 .snapshot-delivery-section,
 .trust-section,
-.growth-section {
+.growth-section,
+.buyer-path-section,
+.deal-room-week-section,
+.buyer-faq-section {
   background: #091018;
 }
 
@@ -658,7 +715,10 @@ h3 {
 .payment-section,
 .quiz-section,
 .checklist-section,
-.upgrade-section {
+.upgrade-section,
+.checkout-confidence-section,
+.hosted-checkout-section,
+.executive-queue-section {
   background: #0d1218;
 }
 
@@ -989,9 +1049,115 @@ h3 {
 
 .checkout-card,
 .growth-card,
-.niche-card {
+.niche-card,
+.buyer-path-card,
+.trust-stack-card,
+.policy-card,
+.deal-week-card,
+.faq-card,
+.hosted-copy-card,
+.executive-question-card {
   display: grid;
   gap: 0.6rem;
+}
+
+.buyer-path-card {
+  align-content: start;
+  padding: 1rem;
+  background: var(--panel);
+}
+
+.buyer-path-card[data-live="true"] {
+  border-color: rgba(96, 211, 148, 0.52);
+}
+
+.buyer-path-card[data-live="false"] {
+  border-color: rgba(245, 194, 75, 0.48);
+}
+
+.buyer-path-card span,
+.policy-card span,
+.deal-week-card span,
+.hosted-copy-card span,
+.executive-question-card span {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.buyer-path-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.buyer-path-top strong {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  color: #061018;
+  background: var(--gold);
+  font-weight: 900;
+}
+
+.buyer-path-card p,
+.trust-stack-card p,
+.policy-card p,
+.deal-week-card p,
+.faq-card p,
+.hosted-copy-card p,
+.executive-question-card p {
+  margin: 0;
+  color: #d7e0ea;
+  line-height: 1.55;
+}
+
+.buyer-path-card small,
+.hosted-copy-card small,
+.executive-question-card small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.buyer-path-action {
+  display: grid;
+  gap: 0.45rem;
+  align-items: start;
+  margin-top: 0.25rem;
+}
+
+.buyer-path-action em {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.trust-stack-card,
+.policy-card,
+.deal-week-card,
+.faq-card,
+.hosted-copy-card,
+.executive-question-card {
+  align-content: start;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.trust-stack-card strong,
+.deal-week-card strong,
+.faq-card strong,
+.hosted-copy-card strong,
+.executive-question-card strong {
+  color: var(--text);
+  line-height: 1.25;
+}
+
+body.buyer-mode .handoff-box,
+body.buyer-mode .modal-actions [data-copy-claude] {
+  display: none;
 }
 
 .launch-preview-section {
@@ -1675,6 +1841,13 @@ h3 {
   .product-grid,
   .niche-grid,
   .checkout-grid,
+  .buyer-path-grid,
+  .trust-stack-grid,
+  .policy-grid,
+  .deal-week-grid,
+  .faq-grid,
+  .hosted-copy-grid,
+  .executive-question-grid,
   .launch-preview-grid,
   .fulfillment-grid,
   .proof-stack-grid,

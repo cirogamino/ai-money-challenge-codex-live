@@ -32,6 +32,16 @@ const routeConfigs = [
       'Qualify the workflow, confirm the $99 deposit credit, prepare the $1,401 balance path, and schedule the build sprint.',
   },
   {
+    folder: 'sprint-deposit',
+    routeSlug: 'ai-revenue-sprint-deposit-polar',
+    confirmationParam: 'checkout_id',
+    primaryAction: 'Complete Sprint deposit intake',
+    deliveryWindow: 'Qualification packet same day',
+    requiredFields: ['buyerName', 'buyerEmail', 'businessName', 'website', 'workflow', 'bottleneck', 'targetBuyer'],
+    nextStep:
+      'Qualify the workflow, confirm the $99 Polar deposit credit, prepare the Stripe balance path after onboarding clears, and schedule the build sprint.',
+  },
+  {
     folder: 'sprint-balance',
     routeSlug: 'ai-revenue-sprint-balance',
     confirmationParam: 'session_id',
@@ -106,8 +116,17 @@ export function getFulfillmentRouteBySlug(routeSlug) {
   return routeWithPayment(config);
 }
 
+export function getFulfillmentRouteForRedirect(folder, params = {}) {
+  const explicitRouteSlug = pickParam(params, 'route_slug');
+
+  return explicitRouteSlug ? getFulfillmentRouteBySlug(explicitRouteSlug) : getFulfillmentRouteByFolder(folder);
+}
+
 export function buildIntakeSeed(folderOrRouteSlug, params = {}) {
-  const route = folderOrRouteSlug.includes('ai-')
+  const explicitRouteSlug = pickParam(params, 'route_slug');
+  const route = explicitRouteSlug
+    ? getFulfillmentRouteBySlug(explicitRouteSlug)
+    : folderOrRouteSlug.includes('ai-')
     ? getFulfillmentRouteBySlug(folderOrRouteSlug)
     : getFulfillmentRouteByFolder(folderOrRouteSlug);
   const checkoutReference =

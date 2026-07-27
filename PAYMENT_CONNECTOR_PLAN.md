@@ -105,3 +105,12 @@ Buyer mode hides progress bars, connector setup details, and internal checklists
 ## Next Step For Claude
 
 Create the Polar `$99` Sprint deposit fallback first if Stripe remains blocked, then finish Stripe onboarding until the account can create Payment Links. After Stripe clears, create and install the preferred Stripe deposit and balance URLs. The Polar Snapshot and Deal Room links are already installed and smoke-tested.
+
+If Stripe remains blocked, install the Polar deposit fallback with:
+
+```bash
+node scripts/apply-checkout-links.mjs \
+  --polar-sprint-deposit=https://buy.polar.sh/...
+```
+
+Keep webhook secrets out of this static site. Route real Stripe and Polar webhook events into the n8n backend only after the fake-event path in `GO_LIVE_SECURITY_REVENUE_PLAN.md` passes.

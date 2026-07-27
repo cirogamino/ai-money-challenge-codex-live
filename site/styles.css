@@ -1809,6 +1809,107 @@ body.buyer-mode .modal-actions [data-copy-claude] {
   padding-left: 1.1rem;
 }
 
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: #060a0f;
+}
+
+.footer-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.footer-layout strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.footer-layout p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.footer-layout nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.footer-layout a {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: #d7e0ea;
+  padding: 0.55rem 0.7rem;
+  text-decoration: none;
+}
+
+.policy-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.policy-hero {
+  padding: 6rem 1rem 2rem;
+  border-bottom: 1px solid var(--line);
+  background: #0b1118;
+}
+
+.policy-hero .section-inner {
+  max-width: 860px;
+}
+
+.policy-hero p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.policy-content {
+  padding: 2rem 1rem 4rem;
+}
+
+.policy-content .section-inner {
+  display: grid;
+  max-width: 860px;
+  gap: 1rem;
+}
+
+.policy-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 1rem;
+}
+
+.policy-panel h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.policy-panel p,
+.policy-panel li {
+  color: #d7e0ea;
+  line-height: 1.62;
+}
+
+.policy-panel a {
+  color: var(--cyan);
+}
+
+.policy-back {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1rem;
+  color: var(--cyan);
+  font-weight: 800;
+  text-decoration: none;
+}
+
 .success-plan-card {
   padding: 0.8rem;
 }
@@ -1884,8 +1985,17 @@ body.buyer-mode .modal-actions [data-copy-claude] {
 
   .success-hero,
   .success-grid,
-  .success-output-grid {
+  .success-output-grid,
+  .footer-layout {
     grid-template-columns: 1fr;
+  }
+
+  .footer-layout {
+    display: grid;
+  }
+
+  .footer-layout nav {
+    justify-content: flex-start;
   }
 }
 
